@@ -1,0 +1,15 @@
+
+
+class Modalidade:
+    def __init__(self, nome: str, horarios: []):
+        self.__nome = nome
+        self.__horarios = horarios
+        self.__alunos = []
+
+    @property
+    def nome(self):
+        return self.__nome
+
+    @nome.setter
+    def nome(self, nome: str):
+        self.__nome = nome
