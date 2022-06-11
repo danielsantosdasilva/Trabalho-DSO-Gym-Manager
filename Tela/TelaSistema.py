@@ -15,3 +15,12 @@ class TelaSistema(TelaAbstrata):
             opcao = super().ler_entrada([1,2,0])
             return opcao
 
+    def menu_inicial_professor(self):
+        while True:
+            print("--------PROFESSOR--------")
+            print("1. Alterar dados pessoais do professor")
+            print("2. Administrar Alunos")
+            print("3. Administrar Modalidades")
+            print("0. Retornar")
+            opcao = super().ler_entrada([1, 2, 3, 0])
+            return opcao

@@ -25,15 +25,20 @@ class CtrlSistema:
     def sistema_aluno(self):
         self.__controlador_aluno.iniciar_sist_aluno()
 
-    def sistema_professor(self):
-        self.__controlador_professor.iniciar_sist_professor()
-
     def sair(self):
         exit()
 
     def inicializar(self):
-        switcher = {1: self.sistema_aluno, 2: self.sistema_professor, 0: self.sair}
+        switcher = {1: self.sistema_aluno, 2: self.iniciar_sist_professor, 0: self.sair}
         while True:
             opcao = self.__tela_sistema.mostrar_opcoes_sistema()
+            metodo = switcher[opcao]
+            metodo()
+
+    def iniciar_sist_professor(self):
+        switcher = {1: self.__controlador_professor.alterar_dados_prof, 2: self.__controlador_aluno.menu_cadastro_aluno,
+                    3: self.__controlador_modalidade.matricular_aluno_modalidade, 0: self.inicializar}
+        while True:
+            opcao = self.__tela_sistema.menu_inicial_professor()
             metodo = switcher[opcao]
             metodo()
