@@ -2,12 +2,14 @@ from abc import ABC, abstractmethod
 
 class Pessoa(ABC):
     @abstractmethod
-    def __init__(self, nome: str, idade: int, cpf: int, peso: float, altura: float):
+    def __init__(self, nome: str, senha: str, idade: int, cpf: int, peso: float, altura: float, matricula: int):
         self.__nome = nome
+        self.__senha = senha
         self.__idade = idade
         self.__cpf = cpf
         self.__peso = peso
         self.__altura = altura
+        self.__matricula = matricula
 
     @property
     def nome(self):
@@ -48,3 +50,19 @@ class Pessoa(ABC):
     @altura.setter
     def altura(self, altura):
         self.__altura = altura
+
+    @property
+    def matricula(self):
+        return self.__matricula
+
+    @matricula.setter
+    def matricula(self, matricula):
+        self.__matricula = matricula
+
+    @property
+    def senha(self):
+        return self.__senha
+
+    @senha.setter
+    def senha(self, senha):
+        self.__senha = senha

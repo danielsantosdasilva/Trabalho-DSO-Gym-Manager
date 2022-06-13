@@ -1,6 +1,5 @@
 from Tela.TelaAbstrata import TelaAbstrata
 
-
 class TelaSistema(TelaAbstrata):
     def __init__(self):
         pass
@@ -24,3 +23,19 @@ class TelaSistema(TelaAbstrata):
             print("0. Retornar")
             opcao = super().ler_entrada([1, 2, 3, 0])
             return opcao
+
+    def login_professor(self):
+        while True:
+            print("--------LOGIN PROFESSOR--------")
+            matricula_prof = super().ler_dados(int, "Matricula: ")
+            senha_prof = super().ler_dados(str, "Senha: ")
+            dados = {"matricula": matricula_prof, "senha": senha_prof}
+            return dados
+
+    def login_aluno(self):
+        while True:
+            print("--------LOGIN ALUNO--------")
+            matricula_aluno = super().ler_dados(int, "Matricula: ")
+            senha_aluno = super().ler_dados(str, "Senha: ")
+            dados = {"matricula": matricula_aluno, "senha": senha_aluno}
+            return dados

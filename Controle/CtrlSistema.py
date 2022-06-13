@@ -1,4 +1,5 @@
 from Tela.TelaSistema import TelaSistema
+from Entidade.professor import Professor
 from Controle.CtrlAluno import CtrlAluno
 from Controle.CtrlProfessor import CtrlProfessor
 from Controle.CtrlModalidade import CtrlModalidade
@@ -15,7 +16,7 @@ class CtrlSistema:
         return self.__controlador_aluno
 
     @property
-    def controlar_professor(self):
+    def controlador_professor(self):
         return self.__controlador_professor
 
     @property
@@ -29,7 +30,8 @@ class CtrlSistema:
         exit()
 
     def inicializar(self):
-        switcher = {1: self.sistema_aluno, 2: self.iniciar_sist_professor, 0: self.sair}
+        self.__controlador_aluno.aluno_logado = None
+        switcher = {1: self.sistema_aluno, 2: self.login_professor, 0: self.sair}
         while True:
             opcao = self.__tela_sistema.mostrar_opcoes_sistema()
             metodo = switcher[opcao]
@@ -42,3 +44,24 @@ class CtrlSistema:
             opcao = self.__tela_sistema.menu_inicial_professor()
             metodo = switcher[opcao]
             metodo()
+
+    def login_professor(self):
+        dados = self.__tela_sistema.login_professor()
+        matricula = dados["matricula"]
+        senha = dados["senha"]
+        professor = self.__controlador_professor.professor
+        if professor.matricula == matricula and professor.senha == senha:
+            self.iniciar_sist_professor()
+        else:
+            self.__tela_sistema.mensagem("Matricula ou senha erradas!")
+
+    def login_aluno(self):
+        dados = self.__tela_sistema.login_aluno()
+        matricula = dados["matricula"]
+        senha = dados["senha"]
+        for aluno in self.__controlador_aluno.lista_alunos:
+            if aluno.matricula == matricula and aluno.senha == senha:
+                self.__controlador_aluno.aluno_logado = aluno
+                return True
+        else:
+            self.__tela_sistema.mensagem("Matricula ou senha erradas!")

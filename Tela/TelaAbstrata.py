@@ -33,5 +33,16 @@ class TelaAbstrata(ABC):
             except ValueError:
                 print("Por favor, preencha os dados corretamente!")
 
+    def opcoes_cadastro(self, mensagem, pessoa):
+        print(mensagem)
+        nome = self.ler_dados(str, f"Nome do {pessoa}: ")
+        idade = self.ler_dados(int, f"Idade do {pessoa}: ")
+        cpf = self.ler_dados(int, f"CPF do {pessoa}: ")
+        peso = self.ler_dados(float, f"Peso do {pessoa}: ")
+        altura = self.ler_dados(float, f"Altura do {pessoa}: ")
+        senha = self.ler_dados(str, f"Senha: ")
+        dados = {"nome": nome, "idade": idade, "cpf": cpf, "peso": peso, "altura": altura, "senha": senha}
+        return dados
+
     def mensagem(self, mensagem):
         print(mensagem)
