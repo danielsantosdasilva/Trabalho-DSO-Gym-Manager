@@ -20,7 +20,7 @@ class CtrlSistema:
         return self.__controlador_professor
 
     @property
-    def controlador_modalide(self):
+    def controlador_modalidade(self):
         return self.__controlador_modalidade
 
     def sistema_aluno(self):
