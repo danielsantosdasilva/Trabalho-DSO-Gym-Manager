@@ -33,7 +33,7 @@ class CtrlAluno:
             num_aulas = 0
             self.__tela_aluno.mensagem(f"-----{dia.value.upper()}-----")
             for aula in aluno.aulas:
-                if dia in aula.horario.dia_semana:
+                if aula.modalidade in aluno.modalidades and dia in aula.horario.dia_semana:
                     self.__tela_aluno.mensagem(f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
                     num_aulas += 1
             if num_aulas == 0:
@@ -108,7 +108,8 @@ class CtrlAluno:
 
     def listar_aulas(self, aluno):
         for horarioaluno in aluno.aulas:
-            self.__tela_aluno.listar_aulas(horarioaluno.modalidade, horarioaluno.horario.periodo, horarioaluno.codigo)
+            if horarioaluno.modalidade in aluno.modalidades:
+                self.__tela_aluno.listar_aulas(horarioaluno.modalidade, horarioaluno.horario.periodo, horarioaluno.codigo)
 
     def registrar_frequencia(self):
         aluno = self.__aluno_logado
@@ -116,7 +117,7 @@ class CtrlAluno:
         codigo_aula = self.__tela_aluno.escolher_codigo_aula("Escolha o código da aula a registrar frequência: ")
         if aluno.aulas:
             for horarioaluno in aluno.aulas:
-                if horarioaluno.codigo == codigo_aula:
+                if horarioaluno.modalidade in aluno.modalidades and horarioaluno.codigo == codigo_aula:
                     for frequencia in aluno.frequencia:
                         if frequencia.aula == horarioaluno:
                             frequencia.aulas_feitas += 1

@@ -82,9 +82,9 @@ class CtrlModalidade:
                     aluno.modalidades.remove(modalidade) if modalidade in aluno.modalidades else None
                     modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
                     for aula in aluno.aulas:
-                        if aula.modalidade.codigo == modalidade.codigo:
+                        if aula.modalidade.horarios == modalidade.horarios:
                             aluno.aulas.remove(aula)
-                            self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
+                    self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
             else:
                 self.__tela_modalidade.mensagem("O aluno não está cadastrado em nenhuma modalidade.")
 
