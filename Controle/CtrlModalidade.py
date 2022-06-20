@@ -65,7 +65,8 @@ class CtrlModalidade:
                             aluno.aulas.append(horario_aluno)
                             frequencia = Frequencia(modalidade, horario_aluno, horario.numero_aulas)
                             aluno.frequencia.append(frequencia)
-                            modalidade.alunos.append(aluno)
+                            modalidade.alunos.append(aluno) if aluno not in modalidade.alunos else None
+                            aluno.modalidades.append(modalidade) if modalidade not in aluno.modalidades else None
                             self.__tela_modalidade.mensagem("Aluno cadastrado na modalidade com sucesso!")
 
     def desmatricular_aluno_modalidade(self):
@@ -81,8 +82,9 @@ class CtrlModalidade:
                     self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
                     modalidade.alunos.remove(aluno)
                     for horarioaluno in aluno.aulas:
-                        if horarioaluno.modalidade == modalidade:
+                        if horarioaluno.modalidade.nome == modalidade.nome:
                             aluno.aulas.remove(horarioaluno)
+                            aluno.modalidades.remove(modalidade)
                     self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
 
     def listar_modalidades(self):

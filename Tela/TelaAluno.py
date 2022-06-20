@@ -11,8 +11,9 @@ class TelaAluno(TelaAbstrata):
             print("1. Consultar dados pessoais")
             print("2. Consultar grade de aulas")
             print("3. Registrar frequência em uma aula")
+            print("4. Emitir relatório")
             print("0. Retornar")
-            opcao = super().ler_entrada([1, 2, 3, 0])
+            opcao = super().ler_entrada([1, 2, 3, 4, 0])
             return opcao
 
     def listar_alunos(self, aluno):
@@ -47,11 +48,24 @@ class TelaAluno(TelaAbstrata):
             return opcao
 
     def listar_aulas(self, modalidade, horario, codigo):
+        print(f"-------------------------")
         print(f"Aula: {modalidade.nome}")
         print(f"Horário: {horario}")
         print(f"Código: {codigo}")
+        print(f"-------------------------")
 
     def escolher_codigo_aula(self, mensagem):
         print("-----ESCOLHER AULA-----")
         opcao = super().ler_dados(int, mensagem)
         return opcao
+
+    def emitir_relatorio(self, modalidade, total_aulas, aulas_feitas, quociente):
+        print(f"* Modalidade {modalidade.nome}")
+        print(f"Nível de frequência no mês: {quociente}%")
+        print(f"Total de aulas em um mês: {total_aulas}")
+        print(f"Total de aulas feitas: {aulas_feitas}")
+        print(f"-----------------------------------")
+
+
+
+

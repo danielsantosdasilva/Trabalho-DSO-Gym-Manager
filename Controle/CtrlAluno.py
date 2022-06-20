@@ -46,7 +46,7 @@ class CtrlAluno:
         self.listar_alunos()
         if self.__lista_alunos:
             if self.__controlador_sistema.login_aluno():
-                switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 0: self.__controlador_sistema.inicializar}
+                switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 4: self.emitir_relatorio, 0: self.__controlador_sistema.inicializar}
                 while True:
                     opcao = self.__tela_aluno.mostrar_opcoes_aluno()
                     metodo = switcher[opcao]
@@ -125,3 +125,22 @@ class CtrlAluno:
                             return
             else:
                 self.__tela_aluno.mensagem("A aula escolhida não existe!")
+
+    def emitir_relatorio(self):
+        aluno = self.__aluno_logado
+        self.__tela_aluno.mensagem(f"-----RELATÓRIO FREQUÊNCIA {aluno.nome.upper()}-----")
+        if aluno.modalidades:
+            for modalidade in aluno.modalidades:
+                total_aulas = 0
+                aulas_feitas = 0
+                for frequencia in aluno.frequencia:
+                    if frequencia.modalidade == modalidade:
+                        total_aulas += frequencia.aulas_totais
+                        aulas_feitas += frequencia.aulas_feitas
+                if aulas_feitas != 0:
+                    quociente = aulas_feitas / total_aulas * 100
+                else:
+                    quociente = 0
+                self.__tela_aluno.emitir_relatorio(modalidade, total_aulas, aulas_feitas, quociente)
+        else:
+            self.__tela_aluno.mensagem(f"{aluno.nome} não está cadastrado em nenhuma modalidade.")

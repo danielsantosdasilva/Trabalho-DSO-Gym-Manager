@@ -6,6 +6,11 @@ class Aluno(Pessoa):
         super().__init__(nome, senha, idade, peso, cpf, altura, matricula)
         self.__aulas = []
         self.__frequencia = []
+        self.__modalidades = []
+
+    @property
+    def modalidades(self):
+        return self.__modalidades
 
     @property
     def aulas(self):
