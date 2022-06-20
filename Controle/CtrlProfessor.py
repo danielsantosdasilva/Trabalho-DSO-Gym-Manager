@@ -1,6 +1,7 @@
 from Tela.TelaProfessor import TelaProfessor
 from Entidade.professor import Professor
 
+
 class CtrlProfessor:
     def __init__(self, controlador_sistema):
         self.__tela_professor = TelaProfessor()
@@ -37,4 +38,3 @@ class CtrlProfessor:
                 professor.cpf = dados["cpf"]
                 professor.altura = dados["altura"]
                 professor.senha = dados["senha"]
-

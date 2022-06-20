@@ -1,4 +1,3 @@
-from Entidade import modalidade
 from Tela.TelaModalidade import TelaModalidade
 from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
@@ -80,11 +79,12 @@ class CtrlModalidade:
             if isinstance(modalidade, Modalidade) and (modalidade is not None):
                 if isinstance(aluno, Aluno) and (aluno is not None):
                     self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
-                    modalidade.alunos.remove(aluno)
+                    modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
                     for horarioaluno in aluno.aulas:
                         if horarioaluno.modalidade.nome == modalidade.nome:
                             aluno.aulas.remove(horarioaluno)
-                            aluno.modalidades.remove(modalidade)
+                            if modalidade in aluno.modalidades:
+                                aluno.modalidades.remove(modalidade)
                     self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
 
     def listar_modalidades(self):

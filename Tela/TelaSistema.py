@@ -1,5 +1,6 @@
 from Tela.TelaAbstrata import TelaAbstrata
 
+
 class TelaSistema(TelaAbstrata):
     def __init__(self):
         pass

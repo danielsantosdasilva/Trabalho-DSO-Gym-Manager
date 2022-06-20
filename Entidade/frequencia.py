@@ -1,5 +1,4 @@
 
-
 class Frequencia:
     def __init__(self, modalidade, aula, aulas_totais):
         self.__aulas_feitas = 0

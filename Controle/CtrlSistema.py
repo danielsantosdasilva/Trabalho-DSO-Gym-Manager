@@ -1,8 +1,8 @@
 from Tela.TelaSistema import TelaSistema
-from Entidade.professor import Professor
 from Controle.CtrlAluno import CtrlAluno
 from Controle.CtrlProfessor import CtrlProfessor
 from Controle.CtrlModalidade import CtrlModalidade
+
 
 class CtrlSistema:
     def __init__(self):
