@@ -67,7 +67,6 @@ class CtrlAluno:
                 break
         else:
             aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
-            print(aluno.matricula)
             self.__lista_alunos.append(aluno)
 
     def alterar_dados_aluno(self):

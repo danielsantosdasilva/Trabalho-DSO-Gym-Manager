@@ -39,7 +39,6 @@ class CtrlModalidade:
             self.__tela_modalidade.mensagem("O horário escolhido não existe!")
 
     def matricular_aluno_modalidade(self):
-        print("CHEGOU EM MATRICULAR ALUNO MODALIDADE")
         self.__controlador_sistema.controlador_aluno.listar_alunos()
         if self.__controlador_sistema.controlador_aluno.lista_alunos:
             matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a cadastrar: ")
@@ -73,18 +72,21 @@ class CtrlModalidade:
         if self.__controlador_sistema.controlador_aluno.lista_alunos:
             matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
             aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
-            self.listar_modalidades_aluno(aluno)
-            codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a desmatricular aluno: ")
-            modalidade = self.selecionar_modalidade_aluno(aluno, codigo_modalidade)
-            if isinstance(modalidade, Modalidade) and (modalidade is not None)\
-                    and isinstance(aluno, Aluno) and (aluno is not None):
-                self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
-                aluno.modalidades.remove(modalidade) if modalidade in aluno.modalidades else None
-                modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
-                for aula in aluno.aulas:
-                    if aula.modalidade.codigo == modalidade.codigo:
-                        aluno.aulas.remove(aula)
-                        self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
+            if aluno.modalidades:
+                self.listar_modalidades_aluno(aluno)
+                codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a desmatricular aluno: ")
+                modalidade = self.selecionar_modalidade_aluno(aluno, codigo_modalidade)
+                if isinstance(modalidade, Modalidade) and (modalidade is not None)\
+                        and isinstance(aluno, Aluno) and (aluno is not None):
+                    self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
+                    aluno.modalidades.remove(modalidade) if modalidade in aluno.modalidades else None
+                    modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
+                    for aula in aluno.aulas:
+                        if aula.modalidade.codigo == modalidade.codigo:
+                            aluno.aulas.remove(aula)
+                            self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
+            else:
+                self.__tela_modalidade.mensagem("O aluno não está cadastrado em nenhuma modalidade.")
 
     def listar_modalidades(self):
         lista_modalidades = self.__lista_modalidades
