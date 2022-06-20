@@ -37,3 +37,10 @@ class TelaModalidade(TelaAbstrata):
         print("0. Retornar")
         opcao = super().ler_entrada([1, 2, 3, 0])
         return opcao
+
+    def listar_horario_aluno(self, aula):
+        print("-----MODALIDADE-----")
+        print(f"Modalidade: {aula.modalidade.nome}")
+        print(f"Período: {aula.horario.periodo}")
+        print(f"Codigo: {aula.codigo}")
+        print("--------------------")

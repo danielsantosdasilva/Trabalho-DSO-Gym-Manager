@@ -1,8 +1,8 @@
 from Tela.TelaModalidade import TelaModalidade
 from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
-from Entidade.horarioaluno import HorarioAluno
 from Entidade.frequencia import Frequencia
+from Entidade.horarioaluno import HorarioAluno
 from random import randint
 
 
@@ -73,19 +73,18 @@ class CtrlModalidade:
         if self.__controlador_sistema.controlador_aluno.lista_alunos:
             matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
             aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
-            self.listar_modalidades()
+            self.listar_modalidades_aluno(aluno)
             codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a desmatricular aluno: ")
-            modalidade = self.selecionar_modalidade(codigo_modalidade)
-            if isinstance(modalidade, Modalidade) and (modalidade is not None):
-                if isinstance(aluno, Aluno) and (aluno is not None):
-                    self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
-                    modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
-                    for horarioaluno in aluno.aulas:
-                        if horarioaluno.modalidade.nome == modalidade.nome:
-                            aluno.aulas.remove(horarioaluno)
-                            if modalidade in aluno.modalidades:
-                                aluno.modalidades.remove(modalidade)
-                    self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
+            modalidade = self.selecionar_modalidade_aluno(aluno, codigo_modalidade)
+            if isinstance(modalidade, Modalidade) and (modalidade is not None)\
+                    and isinstance(aluno, Aluno) and (aluno is not None):
+                self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
+                aluno.modalidades.remove(modalidade) if modalidade in aluno.modalidades else None
+                modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
+                for aula in aluno.aulas:
+                    if aula.modalidade.codigo == modalidade.codigo:
+                        aluno.aulas.remove(aula)
+                        self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
 
     def listar_modalidades(self):
         lista_modalidades = self.__lista_modalidades
@@ -104,3 +103,14 @@ class CtrlModalidade:
         for dia in horario:
             lista_dias.append(dia.value)
         return lista_dias
+
+    def selecionar_modalidade_aluno(self, aluno, codigo):
+        for modalidade in aluno.modalidades:
+            if modalidade.codigo == codigo:
+                return modalidade
+        else:
+            self.__tela_modalidade.mensagem("A modalidade escolhida não existe!")
+
+    def listar_modalidades_aluno(self, aluno):
+        for modalidade in aluno.modalidades:
+            self.__tela_modalidade.listar_modalidades(modalidade)

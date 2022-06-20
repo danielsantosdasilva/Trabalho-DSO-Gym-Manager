@@ -2,6 +2,7 @@ from Entidade.horario import Horario
 from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
 
+
 class HorarioAluno:
     def __init__(self, horario: Horario, aluno: Aluno, modalidade: Modalidade, codigo: int):
         self.__horario = horario

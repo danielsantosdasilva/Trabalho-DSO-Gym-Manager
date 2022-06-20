@@ -30,7 +30,7 @@ class TelaAbstrata(ABC):
                         raise ValueError
                 else:
                     opcao = input(mensagem)
-                if isinstance(opcao, tipo) == False:
+                if not isinstance(opcao, tipo):
                     raise ValueError
                 return opcao
             except ValueError:

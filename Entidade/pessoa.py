@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Pessoa(ABC):
     @abstractmethod
     def __init__(self, nome: str, senha: str, idade: int, cpf: int, peso: float, altura: float, matricula: int):

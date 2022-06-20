@@ -66,7 +66,7 @@ class CtrlAluno:
                 self.__tela_aluno.mensagem("O aluno já está cadastrado no sistema!")
                 break
         else:
-            aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000,9999))
+            aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
             print(aluno.matricula)
             self.__lista_alunos.append(aluno)
 

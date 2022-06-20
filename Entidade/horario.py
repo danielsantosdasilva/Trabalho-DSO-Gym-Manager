@@ -1,4 +1,4 @@
-from random import randint
+
 
 class Horario:
     def __init__(self, periodo: str, dia_semana: [], codigo, numero_aulas: int):

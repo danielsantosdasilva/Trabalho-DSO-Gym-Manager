@@ -12,7 +12,7 @@ class TelaSistema(TelaAbstrata):
             print("1. Aluno")
             print("2. Professor")
             print("0. Sair")
-            opcao = super().ler_entrada([1,2,0])
+            opcao = super().ler_entrada([1, 2, 0])
             return opcao
 
     def menu_inicial_professor(self):

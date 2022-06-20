@@ -65,7 +65,3 @@ class TelaAluno(TelaAbstrata):
         print(f"Total de aulas em um mês: {total_aulas}")
         print(f"Total de aulas feitas: {aulas_feitas}")
         print(f"-----------------------------------")
-
-
-
-
