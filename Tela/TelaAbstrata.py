@@ -23,10 +23,13 @@ class TelaAbstrata(ABC):
                     opcao = int(input(mensagem))
                 elif tipo == float:
                     opcao = float(input(mensagem))
-                else:
+                elif tipo == "nome":
                     opcao = input(mensagem)
+                    tipo = str
                     if opcao.isnumeric():
                         raise ValueError
+                else:
+                    opcao = input(mensagem)
                 if isinstance(opcao, tipo) == False:
                     raise ValueError
                 return opcao
@@ -35,7 +38,7 @@ class TelaAbstrata(ABC):
 
     def opcoes_cadastro(self, mensagem, pessoa):
         print(mensagem)
-        nome = self.ler_dados(str, f"Nome do {pessoa}: ")
+        nome = self.ler_dados("nome", f"Nome do {pessoa}: ")
         idade = self.ler_dados(int, f"Idade do {pessoa}: ")
         cpf = self.ler_dados(int, f"CPF do {pessoa}: ")
         peso = self.ler_dados(float, f"Peso do {pessoa}: ")

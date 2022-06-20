@@ -27,7 +27,7 @@ class TelaModalidade(TelaAbstrata):
 
     def listar_horarios(self, horario, dias_semana):
         print(f"Horario: {horario.periodo} - {', '.join(dias_semana)}")
-        print(f"CÃ³digo: {horario.codigo}")
+        print(f"Código: {horario.codigo}")
 
     def menu_inicial_modalidade(self):
         print("--------MODALIDADES--------")

@@ -27,7 +27,6 @@ class CtrlProfessor:
         self.__controlador_sistema.inicializar()
 
     def alterar_dados_prof(self):
-        print("CHEGOU EM ALTERAR DADOS PROF")
         if self.__professor:
             professor = self.__professor
             if isinstance(professor, Professor) and (professor is not None):

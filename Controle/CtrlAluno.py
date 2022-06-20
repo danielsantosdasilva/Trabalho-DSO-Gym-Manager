@@ -1,6 +1,8 @@
 from Tela.TelaAluno import TelaAluno
 from Entidade.aluno import Aluno
 from random import randint
+from Entidade.dia_semana import DiaSemana
+
 
 class CtrlAluno:
     def __init__(self, controlador_sistema):
@@ -22,11 +24,20 @@ class CtrlAluno:
         self.__aluno_logado = aluno_logado
 
     def consultar_cadastro(self):
-        print("CHEGOU EM CONSULTAR CADASTRO")
-        print(f"Usuário logado é {self.__aluno_logado.nome}")
+        self.__tela_aluno.mensagem(f"Usuário logado é {self.__aluno_logado.nome}")
+        self.__tela_aluno.mostrar_cadastro(self.__aluno_logado)
 
     def consultar_aulas(self):
-        print("CHEGOU EM CONSULTAR AULAS")
+        aluno = self.__aluno_logado
+        for dia in DiaSemana:
+            num_aulas = 0
+            self.__tela_aluno.mensagem(f"-----{dia.value.upper()}-----")
+            for aula in aluno.aulas:
+                if dia in aula.horario.dia_semana:
+                    self.__tela_aluno.mensagem(f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
+                    num_aulas += 1
+            if num_aulas == 0:
+                self.__tela_aluno.mensagem("- Não há nenhuma aula nesse dia.")
 
     def retornar(self):
         self.__controlador_sistema.iniciar_sist_professor()
@@ -35,7 +46,7 @@ class CtrlAluno:
         self.listar_alunos()
         if self.__lista_alunos:
             if self.__controlador_sistema.login_aluno():
-                switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 0: self.__controlador_sistema.inicializar}
+                switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 0: self.__controlador_sistema.inicializar}
                 while True:
                     opcao = self.__tela_aluno.mostrar_opcoes_aluno()
                     metodo = switcher[opcao]
@@ -49,7 +60,6 @@ class CtrlAluno:
             metodo()
 
     def cadastrar_aluno(self):
-        print("CHEGOU EM CADASTRO ALUNO")
         dados = self.__tela_aluno.opcoes_cadastro("--------CADASTRO ALUNO--------", "aluno")
         for aluno in self.__lista_alunos:
             if aluno.cpf == dados["cpf"]:
@@ -61,7 +71,6 @@ class CtrlAluno:
             self.__lista_alunos.append(aluno)
 
     def alterar_dados_aluno(self):
-        print("CHEGOU EM ALTERAR DADOS ALUNO")
         self.listar_alunos()
         if self.__lista_alunos:
             matricula = self.__tela_aluno.escolher_aluno("*Matrícula do aluno desejado: ")
@@ -83,7 +92,6 @@ class CtrlAluno:
             self.__tela_aluno.mensagem("O aluno selecionado não existe!")
 
     def excluir_aluno(self):
-        print("CHEGOU EM EXCLUIR ALUNO")
         self.listar_alunos()
         if self.__lista_alunos:
             matricula = self.__tela_aluno.escolher_aluno("*Matrícula do aluno a excluir: ")
@@ -93,9 +101,27 @@ class CtrlAluno:
                 self.__lista_alunos.remove(aluno)
 
     def listar_alunos(self):
-        print("CHEGOU EM LISTAR ALUNOS")
         lista_alunos = self.__lista_alunos
         if not lista_alunos:
             self.__tela_aluno.mensagem("Não há nenhum aluno cadastrado no sistema.")
         for aluno in lista_alunos:
             self.__tela_aluno.listar_alunos(aluno)
+
+    def listar_aulas(self, aluno):
+        for horarioaluno in aluno.aulas:
+            self.__tela_aluno.listar_aulas(horarioaluno.modalidade, horarioaluno.horario.periodo, horarioaluno.codigo)
+
+    def registrar_frequencia(self):
+        aluno = self.__aluno_logado
+        self.listar_aulas(aluno)
+        codigo_aula = self.__tela_aluno.escolher_codigo_aula("Escolha o código da aula a registrar frequência: ")
+        if aluno.aulas:
+            for horarioaluno in aluno.aulas:
+                if horarioaluno.codigo == codigo_aula:
+                    for frequencia in aluno.frequencia:
+                        if frequencia.aula == horarioaluno:
+                            frequencia.aulas_feitas += 1
+                            self.__tela_aluno.mensagem(f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
+                            return
+            else:
+                self.__tela_aluno.mensagem("A aula escolhida não existe!")

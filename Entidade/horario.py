@@ -1,10 +1,15 @@
 from random import randint
 
 class Horario:
-    def __init__(self, periodo: str, dia_semana: [], codigo):
+    def __init__(self, periodo: str, dia_semana: [], codigo, numero_aulas: int):
         self.__periodo = periodo
         self.__dia_semana = dia_semana
         self.__codigo = codigo
+        self.__numero_aulas = numero_aulas
+
+    @property
+    def numero_aulas(self):
+        return self.__numero_aulas
 
     @property
     def periodo(self):

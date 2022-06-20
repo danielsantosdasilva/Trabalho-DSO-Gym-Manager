@@ -3,6 +3,9 @@ from Tela.TelaModalidade import TelaModalidade
 from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
 from Entidade.horarioaluno import HorarioAluno
+from Entidade.frequencia import Frequencia
+from random import randint
+
 
 class CtrlModalidade:
     def __init__(self, controlador_sistema):
@@ -51,7 +54,7 @@ class CtrlModalidade:
                     self.listar_horarios(modalidade)
                     codigo_horario = self.__tela_modalidade.escolher_horarios("Código do horário a inscrever aluno: ")
                     horario = self.selecionar_horario(modalidade, codigo_horario)
-                    horario_aluno = HorarioAluno(horario, aluno, modalidade)
+                    horario_aluno = HorarioAluno(horario, aluno, modalidade, randint(1000, 9999))
                     if isinstance(horario_aluno, HorarioAluno) and (horario_aluno is not None):
                         for aula in aluno.aulas:
                             for dia in aula.horario.dia_semana:
@@ -60,11 +63,12 @@ class CtrlModalidade:
                                     return None
                         else:
                             aluno.aulas.append(horario_aluno)
+                            frequencia = Frequencia(modalidade, horario_aluno, horario.numero_aulas)
+                            aluno.frequencia.append(frequencia)
                             modalidade.alunos.append(aluno)
                             self.__tela_modalidade.mensagem("Aluno cadastrado na modalidade com sucesso!")
 
     def desmatricular_aluno_modalidade(self):
-        print("CHEGOU EM DESMATRICULAR ALUNO MODALIDADE")
         self.__controlador_sistema.controlador_aluno.listar_alunos()
         if self.__controlador_sistema.controlador_aluno.lista_alunos:
             matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
@@ -80,7 +84,6 @@ class CtrlModalidade:
                 self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
 
     def listar_modalidades(self):
-        print("CHEGOU EM LISTAR MODALIDADES")
         lista_modalidades = self.__lista_modalidades
         if lista_modalidades:
             for modalidade in lista_modalidades:
