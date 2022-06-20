@@ -15,8 +15,10 @@ class TelaModalidade(TelaAbstrata):
         opcao = super().ler_dados(int, mensagem)
         return opcao
 
-    def escolher_horarios(self, modalidade):
-        print("-----ESCOLHER HORARIOS-----")
+    def escolher_horarios(self, mensagem):
+        print("-----ESCOLHER HORARIO-----")
+        opcao = super().ler_dados(int, mensagem)
+        return opcao
 
     def listar_modalidades(self, modalidade):
         print("-----MODALIDADE-----")
@@ -25,7 +27,7 @@ class TelaModalidade(TelaAbstrata):
 
     def listar_horarios(self, horario, dias_semana):
         print(f"Horario: {horario.periodo} - {', '.join(dias_semana)}")
-        print(f"Código: {horario.codigo}")
+        print(f"CÃ³digo: {horario.codigo}")
 
     def menu_inicial_modalidade(self):
         print("--------MODALIDADES--------")

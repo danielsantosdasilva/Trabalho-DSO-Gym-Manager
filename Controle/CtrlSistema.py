@@ -39,7 +39,7 @@ class CtrlSistema:
 
     def iniciar_sist_professor(self):
         switcher = {1: self.__controlador_professor.alterar_dados_prof, 2: self.__controlador_aluno.menu_cadastro_aluno,
-                    3: self.__controlador_modalidade.matricular_aluno_modalidade, 0: self.inicializar}
+                    3: self.__controlador_modalidade.iniciar_sist_modalidade, 0: self.inicializar}
         while True:
             opcao = self.__tela_sistema.menu_inicial_professor()
             metodo = switcher[opcao]

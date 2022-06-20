@@ -99,4 +99,3 @@ class CtrlAluno:
             self.__tela_aluno.mensagem("Não há nenhum aluno cadastrado no sistema.")
         for aluno in lista_alunos:
             self.__tela_aluno.listar_alunos(aluno)
-

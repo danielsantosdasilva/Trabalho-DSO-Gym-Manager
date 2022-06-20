@@ -1,5 +1,4 @@
 
-
 class Modalidade:
     def __init__(self, nome: str, horarios: [], codigo: int):
         self.__nome = nome
@@ -22,3 +21,11 @@ class Modalidade:
     @nome.setter
     def nome(self, nome: str):
         self.__nome = nome
+
+    @property
+    def alunos(self):
+        return self.__alunos
+
+    @alunos.setter
+    def alunos(self, alunos=None):
+        self.__alunos = alunos

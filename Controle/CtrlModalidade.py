@@ -1,6 +1,8 @@
+from Entidade import modalidade
 from Tela.TelaModalidade import TelaModalidade
 from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
+from Entidade.horarioaluno import HorarioAluno
 
 class CtrlModalidade:
     def __init__(self, controlador_sistema):
@@ -27,6 +29,13 @@ class CtrlModalidade:
         else:
             self.__tela_modalidade.mensagem("A modalidade escolhida não existe!")
 
+    def selecionar_horario(self, modalidade, codigo):
+        for horario in modalidade.horarios:
+            if horario.codigo == codigo:
+                return horario
+        else:
+            self.__tela_modalidade.mensagem("O horário escolhido não existe!")
+
     def matricular_aluno_modalidade(self):
         print("CHEGOU EM MATRICULAR ALUNO MODALIDADE")
         self.__controlador_sistema.controlador_aluno.listar_alunos()
@@ -40,9 +49,35 @@ class CtrlModalidade:
                 modalidade = self.selecionar_modalidade(codigo_modalidade)
                 if isinstance(modalidade, Modalidade) and (modalidade is not None):
                     self.listar_horarios(modalidade)
+                    codigo_horario = self.__tela_modalidade.escolher_horarios("Código do horário a inscrever aluno: ")
+                    horario = self.selecionar_horario(modalidade, codigo_horario)
+                    horario_aluno = HorarioAluno(horario, aluno, modalidade)
+                    if isinstance(horario_aluno, HorarioAluno) and (horario_aluno is not None):
+                        for aula in aluno.aulas:
+                            for dia in aula.horario.dia_semana:
+                                if aula.horario.periodo == horario.periodo and dia in horario.dia_semana:
+                                    self.__tela_modalidade.mensagem("O horário selecionado para o aluno já está ocupado na sua agenda.")
+                                    return None
+                        else:
+                            aluno.aulas.append(horario_aluno)
+                            modalidade.alunos.append(aluno)
+                            self.__tela_modalidade.mensagem("Aluno cadastrado na modalidade com sucesso!")
 
     def desmatricular_aluno_modalidade(self):
         print("CHEGOU EM DESMATRICULAR ALUNO MODALIDADE")
+        self.__controlador_sistema.controlador_aluno.listar_alunos()
+        if self.__controlador_sistema.controlador_aluno.lista_alunos:
+            matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
+            aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
+            codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a desmatricular aluno: ")
+            modalidade = self.selecionar_modalidade(codigo_modalidade)
+            if isinstance(aluno, Aluno) and (aluno is not None):
+                self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
+                modalidade.alunos.remove(aluno)
+                for horarioaluno in aluno.aulas:
+                    if horarioaluno.modalidade == modalidade:
+                        aluno.aulas.remove(horarioaluno)
+                self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
 
     def listar_modalidades(self):
         print("CHEGOU EM LISTAR MODALIDADES")

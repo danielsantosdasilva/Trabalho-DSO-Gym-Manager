@@ -1,4 +1,5 @@
-
+from Entidade.aluno import Aluno
+from Entidade.modalidade import Modalidade
 
 
 class HorarioAluno:
