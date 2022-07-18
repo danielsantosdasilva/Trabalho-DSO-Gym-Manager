@@ -33,7 +33,7 @@ class CtrlSistema:
         self.__controlador_aluno.aluno_logado = None
         switcher = {1: self.sistema_aluno, 2: self.login_professor, 0: self.sair}
         while True:
-            opcao = self.__tela_sistema.mostrar_opcoes_sistema()
+            opcao = self.__tela_sistema.tela_opcoes_inicio()
             metodo = switcher[opcao]
             metodo()
 
@@ -41,27 +41,29 @@ class CtrlSistema:
         switcher = {1: self.__controlador_professor.alterar_dados_prof, 2: self.__controlador_aluno.menu_cadastro_aluno,
                     3: self.__controlador_modalidade.iniciar_sist_modalidade, 0: self.inicializar}
         while True:
-            opcao = self.__tela_sistema.menu_inicial_professor()
+            opcao = self.__tela_sistema.tela_inicial_professor()
             metodo = switcher[opcao]
             metodo()
 
     def login_professor(self):
-        dados = self.__tela_sistema.login_professor()
-        matricula = dados["matricula"]
-        senha = dados["senha"]
-        professor = self.__controlador_professor.professor
-        if professor.matricula == matricula and professor.senha == senha:
-            self.iniciar_sist_professor()
-        else:
-            self.__tela_sistema.mensagem("Matricula ou senha erradas!")
+        dados = self.__tela_sistema.login()
+        if dados is not None:
+            matricula = dados["matricula"]
+            senha = dados["senha"]
+            professor = self.__controlador_professor.professor
+            if professor.matricula == matricula and professor.senha == senha:
+                self.iniciar_sist_professor()
+            else:
+                self.__tela_sistema.mensagem("Login falhou", "Matrícula ou senha erradas!")
 
     def login_aluno(self):
-        dados = self.__tela_sistema.login_aluno()
-        matricula = dados["matricula"]
-        senha = dados["senha"]
-        for aluno in self.__controlador_aluno.lista_alunos:
-            if aluno.matricula == matricula and aluno.senha == senha:
-                self.__controlador_aluno.aluno_logado = aluno
-                return True
-        else:
-            self.__tela_sistema.mensagem("Matricula ou senha erradas!")
+        dados = self.__tela_sistema.login()
+        if dados is not None:
+            matricula = dados["matricula"]
+            senha = dados["senha"]
+            for aluno in self.__controlador_aluno.lista_alunos:
+                if aluno.matricula == matricula and aluno.senha == senha:
+                    self.__controlador_aluno.aluno_logado = aluno
+                    return True
+            else:
+                self.__tela_sistema.mensagem("Login falhou", "Matrícula ou senha erradas!")

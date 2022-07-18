@@ -1,51 +1,81 @@
 from abc import ABC, abstractmethod
-
+import PySimpleGUI as sg
 
 class TelaAbstrata(ABC):
     @abstractmethod
     def __init__(self):
-        pass
+        self.__window = None
 
-    def ler_entrada(self, valores_validos: []):
-        while True:
-            try:
-                opcao = int(input("Por favor, selecione uma opcao: "))
-                if opcao not in valores_validos:
-                    raise ValueError
-                return opcao
-            except ValueError:
-                print("Voce selecionou uma opcao inexistente, por favor tente novamente!")
+    def opcoes_cadastro(self, nome):
+        sg.ChangeLookAndFeel('DarkTeal11')
+        layout = [
+            [sg.Text(f'Cadastro dados pessoais do {nome}', font = ('Arial', 25))],
+            [sg.Text('Nome: ', size = (10,1), font = ('Arial', 15)), sg.InputText('', key = "nome")],
+            [sg.Text('Idade: ', size = (10,1), font=('Arial', 15)), sg.InputText('', key="idade")],
+            [sg.Text('CPF: ', size = (10,1), font=('Arial', 15)), sg.InputText('', key="cpf")],
+            [sg.Text('Peso: ', size = (10,1), font=('Arial', 15)), sg.InputText('', key="peso")],
+            [sg.Text('Altura: ', size = (10,1), font=('Arial', 15)), sg.InputText('', key="altura")],
+            [sg.Text('Senha: ', size = (10,1), font=('Arial', 15)), sg.InputText('', key="senha", password_char='*')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')],
+        ]
+        self.__window = sg.Window('Cadastro dados pessoais').Layout(layout)
+        button, values = self.open()
+        if button in (None, 'Cancelar'):
+            self.__window.Close()
+            return None
+        self.__window.Close()
+        if self.check_type(values['nome'], "nome") and self.check_type(values["idade"], int) and \
+                self.check_type(values["cpf"], int) and self.check_type(values["peso"], float) and \
+                self.check_type(values["altura"], float) and self.check_type(values["senha"], str):
+            return {"nome": values["nome"], "idade": int(values["idade"]),
+                    "cpf": int(values["cpf"]), "peso": float(values["peso"]),
+                    "altura": float(values["altura"]), "senha": values["senha"]}
 
-    def ler_dados(self, tipo, mensagem):
-        while True:
-            try:
-                if tipo == int:
-                    opcao = int(input(mensagem))
-                elif tipo == float:
-                    opcao = float(input(mensagem))
-                elif tipo == "nome":
-                    opcao = input(mensagem)
+    def mensagem(self, titulo, mensagem):
+        sg.popup(titulo, mensagem)
+
+    def mensagem_error(self, mensagem):
+        sg.popup_error(mensagem)
+
+    def check_type(self, opcao, tipo):
+        try:
+            if opcao is not None:
+                if tipo == "nome":
                     tipo = str
                     if opcao.isnumeric():
                         raise ValueError
-                else:
-                    opcao = input(mensagem)
+                elif tipo == int:
+                    opcao = int(opcao)
+                elif tipo == float:
+                    opcao = float(opcao)
                 if not isinstance(opcao, tipo):
                     raise ValueError
-                return opcao
-            except ValueError:
-                print("Por favor, preencha os dados corretamente!")
+                return True
+        except ValueError:
+            sg.popup_error("Por favor, preencha os dados corretamente!")
+            return None
 
-    def opcoes_cadastro(self, mensagem, pessoa):
-        print(mensagem)
-        nome = self.ler_dados("nome", f"Nome do {pessoa}: ")
-        idade = self.ler_dados(int, f"Idade do {pessoa}: ")
-        cpf = self.ler_dados(int, f"CPF do {pessoa}: ")
-        peso = self.ler_dados(float, f"Peso do {pessoa}: ")
-        altura = self.ler_dados(float, f"Altura do {pessoa}: ")
-        senha = self.ler_dados(str, f"Senha: ")
-        dados = {"nome": nome, "idade": idade, "cpf": cpf, "peso": peso, "altura": altura, "senha": senha}
-        return dados
+    def login(self):
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Text('Matrícula:', size = (10,1), font=('Arial', 15)), sg.InputText('', key = "matricula")],
+            [sg.Text('Senha:', size = (10,1), font=('Arial', 15)), sg.InputText('', key = "senha", password_char='*')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Login').Layout(layout)
+        button, values = self.open()
+        if button in (None,'Cancelar'):
+            self.__window.Close()
+            return None
+        self.__window.Close()
+        if self.check_type(values['matricula'], int):
+            return {"matricula": int(values['matricula']), "senha": values['senha']}
+        else:
+            return None
 
-    def mensagem(self, mensagem):
-        print(mensagem)
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def exit(self):
+        self.exit()

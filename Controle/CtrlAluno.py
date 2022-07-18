@@ -60,14 +60,16 @@ class CtrlAluno:
             metodo()
 
     def cadastrar_aluno(self):
-        dados = self.__tela_aluno.opcoes_cadastro("--------CADASTRO ALUNO--------", "aluno")
-        for aluno in self.__lista_alunos:
-            if aluno.cpf == dados["cpf"]:
-                self.__tela_aluno.mensagem("O aluno já está cadastrado no sistema!")
-                break
-        else:
-            aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
-            self.__lista_alunos.append(aluno)
+        dados = self.__tela_aluno.opcoes_cadastro("aluno")
+        if dados is not None:
+            for aluno in self.__lista_alunos:
+                if aluno.cpf == dados["cpf"]:
+                    self.__tela_aluno.mensagem("O aluno já está cadastrado no sistema!")
+                    break
+            else:
+                aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
+                self.__lista_alunos.append(aluno)
+                self.__tela_aluno.mensagem("Sucesso", "Aluno cadastrado com sucesso!")
 
     def alterar_dados_aluno(self):
         self.listar_alunos()
@@ -102,7 +104,7 @@ class CtrlAluno:
     def listar_alunos(self):
         lista_alunos = self.__lista_alunos
         if not lista_alunos:
-            self.__tela_aluno.mensagem("Não há nenhum aluno cadastrado no sistema.")
+            self.__tela_aluno.mensagem_error("Não há nenhum aluno cadastrado no sistema!")
         for aluno in lista_alunos:
             self.__tela_aluno.listar_alunos(aluno)
 

@@ -31,10 +31,11 @@ class CtrlProfessor:
         if self.__professor:
             professor = self.__professor
             if isinstance(professor, Professor) and (professor is not None):
-                dados = self.__tela_professor.opcoes_cadastro("--------ALTERAR DADOS DO PROFESSOR--------", "professor")
-                professor.nome = dados["nome"]
-                professor.idade = dados["idade"]
-                professor.peso = dados["peso"]
-                professor.cpf = dados["cpf"]
-                professor.altura = dados["altura"]
-                professor.senha = dados["senha"]
+                dados = self.__tela_professor.opcoes_cadastro("professor")
+                if dados is not None:
+                    professor.nome = dados["nome"]
+                    professor.idade = dados["idade"]
+                    professor.peso = dados["peso"]
+                    professor.cpf = dados["cpf"]
+                    professor.altura = dados["altura"]
+                    professor.senha = dados["senha"]
