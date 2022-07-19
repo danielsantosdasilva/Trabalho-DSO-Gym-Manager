@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 class TelaAluno(TelaAbstrata):
     def __init__(self):
         self.__window = None
-        self.init_components()
+        self.menu_opcoes_aluno()
 
     def mostrar_opcoes_aluno(self):
         while True:
@@ -17,11 +17,25 @@ class TelaAluno(TelaAbstrata):
             opcao = super().ler_entrada([1, 2, 3, 4, 0])
             return opcao
 
-    def listar_alunos(self, aluno):
-        print("-----ALUNO-----")
-        print(f"Matrícula: {aluno.matricula}")
-        print(f"Nome: {aluno.nome}")
-        print(f"CPF: {aluno.cpf}")
+    def listar_alunos(self, dados):
+        headings = ['Nome', 'Matrícula', 'CPF']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=True,
+                      justification='right',
+                      num_rows=10,
+                      key='listar-alunos',
+                      row_height=35)]
+        ]
+        window = sg.Window("Listagem de alunos").Layout(layout)
+        button, values = window.Read()
+        if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+            self.__window.close()
 
     def mostrar_cadastro(self, aluno):
         print(f"-----DADOS {aluno.nome.upper()}-----")
@@ -87,32 +101,33 @@ class TelaAluno(TelaAbstrata):
         print(f"Total de aulas feitas: {aulas_feitas}")
         print(f"-----------------------------------")
 
-    def tela_opcoes(self):
-        self.init_components()
+    def tela_inicial_aluno(self):
+        self.menu_opcoes_aluno()
         button, values = self.__window.Read()
         opcao = 0
         if values['1']:
             opcao = 1
-        if values['2']:
+        elif values['2']:
             opcao = 2
-        if values['3']:
+        elif values['3']:
             opcao = 3
-        # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
-        if values['0'] or button in (None,'Cancelar'):
+        elif values['4']:
+            opcao = 4
+        if button in (None, 'Cancelar'):
             opcao = 0
         self.close(self.__window)
         return opcao
 
-    def init_components(self):
-        #sg.theme_previewer()
-        sg.ChangeLookAndFeel('DarkTeal4')
+    def menu_opcoes_aluno(self):
+        sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
-            [sg.Text('Bem vindo ao sistema de empréstimo de livros!', font=("Helvica",25))],
-            [sg.Text('Escolha sua opção', font=("Helvica",15))],
-            [sg.Radio('Livros',"RD1", key='1')],
-            [sg.Radio('Amigos',"RD1", key='2')],
-            [sg.Radio('Emprestimos',"RD1", key='3')],
-            [sg.Radio('Finalizar sistema',"RD1", key='0')],
+            [sg.Text('Bem vindo, Aluno!', font=("Arial", 25))],
+            [sg.Text('Selecione a opção desejada: ', font=("Arial", 15))],
+            [sg.Radio('Consultar dados pessoais', "RD1", key='1')],
+            [sg.Radio('Consultar grade de aulas', "RD1", key='2')],
+            [sg.Radio('Registrar frequência em uma aula', "RD1", key='3')],
+            [sg.Radio('Emitir relatório', "RD1", key='4')],
+            [sg.Radio('Retornar', "RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
-        self.__window = sg.Window('Sistema de livros').Layout(layout)
+        self.__window = sg.Window('Gym Manager - Professor').Layout(layout)

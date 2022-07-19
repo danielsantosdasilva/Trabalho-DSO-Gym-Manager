@@ -27,7 +27,7 @@ class TelaSistema(TelaAbstrata):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text('Bem vindo, Professor!', font=("Arial",25))],
-            [sg.Text('Seleciona a opção desejada: ', font=("Arial",15))],
+            [sg.Text('Selecione a opção desejada: ', font=("Arial",15))],
             [sg.Radio('Alterar dados pessoais do professor',"RD1", key='1')],
             [sg.Radio('Administrar Alunos',"RD1", key='2')],
             [sg.Radio('Administrar Modalidades', "RD1", key='3')],

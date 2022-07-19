@@ -48,7 +48,7 @@ class CtrlAluno:
             if self.__controlador_sistema.login_aluno():
                 switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 4: self.emitir_relatorio, 0: self.__controlador_sistema.inicializar}
                 while True:
-                    opcao = self.__tela_aluno.mostrar_opcoes_aluno()
+                    opcao = self.__tela_aluno.tela_inicial_aluno()
                     metodo = switcher[opcao]
                     metodo()
 
@@ -105,8 +105,20 @@ class CtrlAluno:
         lista_alunos = self.__lista_alunos
         if not lista_alunos:
             self.__tela_aluno.mensagem_error("Não há nenhum aluno cadastrado no sistema!")
-        for aluno in lista_alunos:
-            self.__tela_aluno.listar_alunos(aluno)
+        else:
+            dados_alunos = self.gerar_lista_alunos()
+            self.__tela_aluno.listar_alunos(dados_alunos)
+
+    def gerar_lista_alunos(self):
+        alunos = []
+        if self.__lista_alunos:
+            for aluno in self.__lista_alunos:
+                dados = []
+                dados.append(aluno.nome)
+                dados.append(aluno.matricula)
+                dados.append(aluno.cpf)
+                alunos.append(dados)
+            return alunos
 
     def listar_aulas(self, aluno):
         for horarioaluno in aluno.aulas:
