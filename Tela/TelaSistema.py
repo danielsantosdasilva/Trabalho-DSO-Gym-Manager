@@ -20,7 +20,7 @@ class TelaSistema(TelaAbstrata):
         # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None, 'Cancelar'):
             opcao = 0
-        self.close()
+        self.close(self.__window)
         return opcao
 
     def menu_inicial_professor(self):
@@ -47,7 +47,7 @@ class TelaSistema(TelaAbstrata):
         # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None,'Cancelar'):
             opcao = 0
-        self.close()
+        self.close(self.__window)
         return opcao
 
     def init_components(self):
@@ -60,6 +60,3 @@ class TelaSistema(TelaAbstrata):
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Gym Manager').Layout(layout)
-
-    def close(self):
-        self.__window.Close()

@@ -6,36 +6,16 @@ class TelaAluno(TelaAbstrata):
         self.__window = None
         self.init_components()
 
-    def tela_inicial_aluno(self):
-        self.menu_opcoes_aluno()
-        button, values = self.__window.Read()
-        opcao = 0
-        if values['1']:
-            opcao = 1
-        elif values['2']:
-            opcao = 2
-        elif values['3']:
-            opcao = 3
-        elif values['4']:
-            opcao = 4
-        if button in (None, 'Cancelar'):
-            opcao = 0
-        self.close()
-        return opcao
-
-    def menu_opcoes_aluno(self):
-        sg.ChangeLookAndFeel('DarkTeal10')
-        layout = [
-            [sg.Text('Bem vindo, Aluno!', font=("Arial",25))],
-            [sg.Text('Seleciona a opção desejada: ', font=("Arial",15))],
-            [sg.Radio('Consultar dados pessoais',"RD1", key='1')],
-            [sg.Radio('Consultar grade de aulas',"RD1", key='2')],
-            [sg.Radio('Registrar frequência em uma aula', "RD1", key='3')],
-            [sg.Radio('Emitir relatório', "RD1", key='4')],
-            [sg.Radio('Retornar', "RD1", key='0')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-        ]
-        self.__window = sg.Window('Gym Manager - Professor').Layout(layout)
+    def mostrar_opcoes_aluno(self):
+        while True:
+            print("--------ALUNO--------")
+            print("1. Consultar dados pessoais")
+            print("2. Consultar grade de aulas")
+            print("3. Registrar frequência em uma aula")
+            print("4. Emitir relatório")
+            print("0. Retornar")
+            opcao = super().ler_entrada([1, 2, 3, 4, 0])
+            return opcao
 
     def listar_alunos(self, aluno):
         print("-----ALUNO-----")
@@ -72,7 +52,7 @@ class TelaAluno(TelaAbstrata):
         # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None, 'Cancelar'):
             opcao = 0
-        self.close()
+        self.close(self.__window)
         return opcao
 
     def cadastro_aluno_prof_window(self):
@@ -120,11 +100,8 @@ class TelaAluno(TelaAbstrata):
         # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if values['0'] or button in (None,'Cancelar'):
             opcao = 0
-        self.close()
+        self.close(self.__window)
         return opcao
-
-    def close(self):
-        self.__window.Close()
 
     def init_components(self):
         #sg.theme_previewer()

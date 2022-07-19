@@ -20,7 +20,7 @@ class CtrlModalidade:
         switcher = {1: self.matricular_aluno_modalidade, 2: self.desmatricular_aluno_modalidade,
                     3: self.listar_modalidades, 0: self.__controlador_sistema.iniciar_sist_professor}
         while True:
-            opcao = self.__tela_modalidade.menu_inicial_modalidade()
+            opcao = self.__tela_modalidade.menu_inicial_tela()
             metodo = switcher[opcao]
             metodo()
 

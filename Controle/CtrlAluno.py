@@ -48,7 +48,7 @@ class CtrlAluno:
             if self.__controlador_sistema.login_aluno():
                 switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 4: self.emitir_relatorio, 0: self.__controlador_sistema.inicializar}
                 while True:
-                    opcao = self.__tela_aluno.tela_inicial_aluno()
+                    opcao = self.__tela_aluno.mostrar_opcoes_aluno()
                     metodo = switcher[opcao]
                     metodo()
 
