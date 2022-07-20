@@ -1,33 +1,50 @@
 from Tela.TelaAbstrata import TelaAbstrata
 import PySimpleGUI as sg
 
+
 class TelaModalidade(TelaAbstrata):
     def __init__(self):
         self.__window = None
 
-    def escolher_aluno(self, mensagem):
-        print("-----ESCOLHER ALUNO-----")
-        opcao = super().ler_dados(int, mensagem)
-        return opcao
+    def listar_modalidades(self, dados):
+        headings = ['Modalidade', 'Código']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=False,
+                      justification='right',
+                      num_rows=10,
+                      key='listar-modalidades',
+                      row_height=35)]
+        ]
+        window = sg.Window("Listagem de modalidades").Layout(layout)
+        button, values = window.Read()
+        if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+        window.close()
 
-    def escolher_modalidade(self, mensagem):
-        print("-----ESCOLHER MODALIDADE-----")
-        opcao = super().ler_dados(int, mensagem)
-        return opcao
-
-    def escolher_horarios(self, mensagem):
-        print("-----ESCOLHER HORARIO-----")
-        opcao = super().ler_dados(int, mensagem)
-        return opcao
-
-    def listar_modalidades(self, modalidade):
-        print("-----MODALIDADE-----")
-        print(f"Modalidade: {modalidade.nome}")
-        print(f"Codigo: {modalidade.codigo}")
-
-    def listar_horarios(self, horario, dias_semana):
-        print(f"Horario: {horario.periodo} - {', '.join(dias_semana)}")
-        print(f"Código: {horario.codigo}")
+    def listar_horarios(self, modalidade, dados):
+        headings = ['Horário', 'Dias', 'Código']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=False,
+                      justification='right',
+                      num_rows=10,
+                      key='listar-horarios',
+                      row_height=35)]
+        ]
+        window = sg.Window(f"Listagem de horarios - {modalidade.nome}").Layout(layout)
+        button, values = window.Read()
+        if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+        window.close()
 
     def menu_inicial_tela(self):
         self.menu_inicial_window()
@@ -62,3 +79,21 @@ class TelaModalidade(TelaAbstrata):
         print(f"Período: {aula.horario.periodo}")
         print(f"Codigo: {aula.codigo}")
         print("--------------------")
+
+    def escolher_aluno(self):
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Text('Por favor, digite a matrícula do aluno desejado:', font=('Arial',15))],
+            [sg.Text('Matrícula: ', font=('Arial',15)), sg.InputText('', key="matricula")],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')],
+        ]
+        self.__window = sg.Window('Escolher aluno').Layout(layout)
+        button, values = self.__window.Read()
+        if button in (None, 'Cancelar'):
+            self.__window.Close()
+            return None
+        self.__window.Close()
+        if self.check_type(values['matricula'], int):
+            return int(values['matricula'])
+        else:
+            return None

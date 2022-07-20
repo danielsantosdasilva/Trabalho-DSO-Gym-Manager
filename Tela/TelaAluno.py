@@ -6,16 +6,9 @@ class TelaAluno(TelaAbstrata):
         self.__window = None
         self.menu_opcoes_aluno()
 
-    def mostrar_opcoes_aluno(self):
-        while True:
-            print("--------ALUNO--------")
-            print("1. Consultar dados pessoais")
-            print("2. Consultar grade de aulas")
-            print("3. Registrar frequência em uma aula")
-            print("4. Emitir relatório")
-            print("0. Retornar")
-            opcao = super().ler_entrada([1, 2, 3, 4, 0])
-            return opcao
+    @property
+    def window(self):
+        return self.__window
 
     def listar_alunos(self, dados):
         headings = ['Nome', 'Matrícula', 'CPF']
@@ -25,7 +18,7 @@ class TelaAluno(TelaAbstrata):
                       headings=headings,
                       max_col_width=35,
                       auto_size_columns=True,
-                      display_row_numbers=True,
+                      display_row_numbers=False,
                       justification='right',
                       num_rows=10,
                       key='listar-alunos',
@@ -35,7 +28,7 @@ class TelaAluno(TelaAbstrata):
         button, values = window.Read()
         if button == "Exit" or button == sg.WIN_CLOSED:
             window.close()
-            self.__window.close()
+        window.close()
 
     def mostrar_cadastro(self, aluno):
         print(f"-----DADOS {aluno.nome.upper()}-----")
@@ -46,10 +39,23 @@ class TelaAluno(TelaAbstrata):
         print(f"Peso: {aluno.peso} kgs")
         print(f"Altura: {aluno.altura} metros")
 
-    def escolher_aluno(self, mensagem):
-        print("-----ESCOLHER ALUNO-----")
-        opcao = super().ler_dados(int, mensagem)
-        return opcao
+    def escolher_aluno(self):
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Text('Por favor, digite a matrícula do aluno desejado:', font=('Arial',15))],
+            [sg.Text('Matrícula: ', font=('Arial',15)), sg.InputText('', key="matricula")],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')],
+        ]
+        self.__window = sg.Window('Escolher aluno').Layout(layout)
+        button, values = self.__window.Read()
+        if button in (None, 'Cancelar'):
+            self.__window.Close()
+            return None
+        self.__window.Close()
+        if self.check_type(values['matricula'], int):
+            return int(values['matricula'])
+        else:
+            return None
 
     def cadastro_aluno_prof(self):
         self.cadastro_aluno_prof_window()

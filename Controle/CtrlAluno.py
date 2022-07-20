@@ -64,7 +64,7 @@ class CtrlAluno:
         if dados is not None:
             for aluno in self.__lista_alunos:
                 if aluno.cpf == dados["cpf"]:
-                    self.__tela_aluno.mensagem("O aluno já está cadastrado no sistema!")
+                    self.__tela_aluno.mensagem("Falha", "O aluno já está cadastrado no sistema!")
                     break
             else:
                 aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
@@ -72,34 +72,38 @@ class CtrlAluno:
                 self.__tela_aluno.mensagem("Sucesso", "Aluno cadastrado com sucesso!")
 
     def alterar_dados_aluno(self):
-        self.listar_alunos()
         if self.__lista_alunos:
-            matricula = self.__tela_aluno.escolher_aluno("*Matrícula do aluno desejado: ")
-            aluno = self.selecionar_aluno_matricula(matricula)
-            if isinstance(aluno, Aluno) and (aluno is not None):
-                dados = self.__tela_aluno.opcoes_cadastro("--------ALTERAR DADOS DO ALUNO--------", "aluno")
-                aluno.nome = dados["nome"]
-                aluno.idade = dados["idade"]
-                aluno.peso = dados["peso"]
-                aluno.cpf = dados["cpf"]
-                aluno.altura = dados["altura"]
-                aluno.senha = dados["senha"]
+            self.listar_alunos()
+            matricula = self.__tela_aluno.escolher_aluno()
+            if isinstance(matricula, int) and matricula is not None:
+                aluno = self.selecionar_aluno_matricula(matricula)
+                if isinstance(aluno, Aluno) and (aluno is not None):
+                    dados = self.__tela_aluno.opcoes_cadastro("aluno")
+                    if dados is not None:
+                        aluno.nome = dados["nome"]
+                        aluno.idade = dados["idade"]
+                        aluno.peso = dados["peso"]
+                        aluno.cpf = dados["cpf"]
+                        aluno.altura = dados["altura"]
+                        aluno.senha = dados["senha"]
+                        self.__tela_aluno.mensagem("Sucesso", "Os dados do aluno foram alterados com sucesso!")
 
     def selecionar_aluno_matricula(self, matricula):
         for aluno in self.__lista_alunos:
             if aluno.matricula == matricula:
                 return aluno
         else:
-            self.__tela_aluno.mensagem("O aluno selecionado não existe!")
+            self.__tela_aluno.mensagem("Falha", "O aluno selecionado não existe!")
 
     def excluir_aluno(self):
         self.listar_alunos()
         if self.__lista_alunos:
-            matricula = self.__tela_aluno.escolher_aluno("*Matrícula do aluno a excluir: ")
-            aluno = self.selecionar_aluno_matricula(matricula)
-            if isinstance(aluno, Aluno) and (aluno is not None):
-                self.__tela_aluno.mensagem(f"O aluno {aluno.nome} de matrícula {aluno.matricula} foi excluído do sistema.")
-                self.__lista_alunos.remove(aluno)
+            matricula = self.__tela_aluno.escolher_aluno()
+            if isinstance(matricula, int) and matricula is not None:
+                aluno = self.selecionar_aluno_matricula(matricula)
+                if isinstance(aluno, Aluno) and (aluno is not None):
+                    self.__lista_alunos.remove(aluno)
+                    self.__tela_aluno.mensagem("Sucesso", "O aluno selecionado foi excluído do sistema!")
 
     def listar_alunos(self):
         lista_alunos = self.__lista_alunos

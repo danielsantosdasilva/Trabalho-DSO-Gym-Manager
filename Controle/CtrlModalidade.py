@@ -29,43 +29,43 @@ class CtrlModalidade:
             if modalidade.codigo == codigo:
                 return modalidade
         else:
-            self.__tela_modalidade.mensagem("A modalidade escolhida não existe!")
+            self.__tela_modalidade.mensagem("Error", "A modalidade escolhida não existe!")
 
     def selecionar_horario(self, modalidade, codigo):
         for horario in modalidade.horarios:
             if horario.codigo == codigo:
                 return horario
         else:
-            self.__tela_modalidade.mensagem("O horário escolhido não existe!")
+            self.__tela_modalidade.mensagem("Error", "O horário escolhido não existe!")
 
     def matricular_aluno_modalidade(self):
         self.__controlador_sistema.controlador_aluno.listar_alunos()
         if self.__controlador_sistema.controlador_aluno.lista_alunos:
-            matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a cadastrar: ")
-            aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
-            if isinstance(aluno, Aluno) and (aluno is not None):
-                self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
-                self.listar_modalidades()
-                codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a inscrever aluno: ")
-                modalidade = self.selecionar_modalidade(codigo_modalidade)
-                if isinstance(modalidade, Modalidade) and (modalidade is not None):
-                    self.listar_horarios(modalidade)
-                    codigo_horario = self.__tela_modalidade.escolher_horarios("Código do horário a inscrever aluno: ")
-                    horario = self.selecionar_horario(modalidade, codigo_horario)
-                    horario_aluno = HorarioAluno(horario, aluno, modalidade, randint(1000, 9999))
-                    if isinstance(horario_aluno, HorarioAluno) and (horario_aluno is not None):
-                        for aula in aluno.aulas:
-                            for dia in aula.horario.dia_semana:
-                                if aula.horario.periodo == horario.periodo and dia in horario.dia_semana:
-                                    self.__tela_modalidade.mensagem("O horário selecionado para o aluno já está ocupado na sua agenda.")
-                                    return None
-                        else:
-                            aluno.aulas.append(horario_aluno)
-                            frequencia = Frequencia(modalidade, horario_aluno, horario.numero_aulas)
-                            aluno.frequencia.append(frequencia)
-                            modalidade.alunos.append(aluno) if aluno not in modalidade.alunos else None
-                            aluno.modalidades.append(modalidade) if modalidade not in aluno.modalidades else None
-                            self.__tela_modalidade.mensagem("Aluno cadastrado na modalidade com sucesso!")
+            matricula = self.__tela_modalidade.escolher_aluno()
+            if isinstance(matricula, int) and matricula is not None:
+                aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
+                if isinstance(aluno, Aluno) and (aluno is not None):
+                    self.listar_modalidades()
+                    codigo_modalidade = self.__tela_modalidade.escolher_codigo('Escolher Modalidade')
+                    modalidade = self.selecionar_modalidade(codigo_modalidade)
+                    if isinstance(modalidade, Modalidade) and (modalidade is not None):
+                        self.listar_horarios(modalidade)
+                        codigo_horario = self.__tela_modalidade.escolher_codigo("Código do Horário")
+                        horario = self.selecionar_horario(modalidade, codigo_horario)
+                        horario_aluno = HorarioAluno(horario, aluno, modalidade, randint(1000, 9999))
+                        if isinstance(horario_aluno, HorarioAluno) and (horario_aluno is not None):
+                            for aula in aluno.aulas:
+                                for dia in aula.horario.dia_semana:
+                                    if aula.horario.periodo == horario.periodo and dia in horario.dia_semana:
+                                        self.__tela_modalidade.mensagem("O horário selecionado para o aluno já está ocupado na sua agenda.")
+                                        return None
+                            else:
+                                aluno.aulas.append(horario_aluno)
+                                frequencia = Frequencia(modalidade, horario_aluno, horario.numero_aulas)
+                                aluno.frequencia.append(frequencia)
+                                modalidade.alunos.append(aluno) if aluno not in modalidade.alunos else None
+                                aluno.modalidades.append(modalidade) if modalidade not in aluno.modalidades else None
+                                self.__tela_modalidade.mensagem("Sucesso", "Aluno cadastrado na modalidade com sucesso!")
 
     def desmatricular_aluno_modalidade(self):
         self.__controlador_sistema.controlador_aluno.listar_alunos()
@@ -74,7 +74,7 @@ class CtrlModalidade:
             aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
             if aluno.modalidades:
                 self.listar_modalidades_aluno(aluno)
-                codigo_modalidade = self.__tela_modalidade.escolher_modalidade("Código da modalidade a desmatricular aluno: ")
+                codigo_modalidade = self.__tela_modalidade.escolher_codigo("Escolher Modalidade")
                 modalidade = self.selecionar_modalidade_aluno(aluno, codigo_modalidade)
                 if isinstance(modalidade, Modalidade) and (modalidade is not None)\
                         and isinstance(aluno, Aluno) and (aluno is not None):
@@ -91,14 +91,36 @@ class CtrlModalidade:
     def listar_modalidades(self):
         lista_modalidades = self.__lista_modalidades
         if lista_modalidades:
-            for modalidade in lista_modalidades:
-                self.__tela_modalidade.listar_modalidades(modalidade)
+            dados = self.gerar_lista_modalidades()
+            self.__tela_modalidade.listar_modalidades(dados)
+
+    def gerar_lista_modalidades(self):
+        modalidades = []
+        if self.__lista_modalidades:
+            for modalidade in self.__lista_modalidades:
+                dados = []
+                dados.append(modalidade.nome)
+                dados.append(modalidade.codigo)
+                modalidades.append(dados)
+            return modalidades
 
     def listar_horarios(self, modalidade):
-        self.__tela_modalidade.mensagem(f"-----HORARIOS {modalidade.nome.upper()}-----")
-        for horario in modalidade.horarios:
-            dias_semana = self.listar_horarios_dias(horario.dia_semana)
-            self.__tela_modalidade.listar_horarios(horario, dias_semana)
+        if self.__lista_modalidades:
+            dados = self.gerar_lista_horarios(modalidade)
+            self.__tela_modalidade.listar_horarios(modalidade, dados)
+
+    def gerar_lista_horarios(self, modalidade):
+        horarios = []
+        if self.__lista_modalidades:
+            for horario in modalidade.horarios:
+                dados = []
+                lista_dias = self.listar_horarios_dias(horario.dia_semana)
+                dias_semana = ', '.join(lista_dias)
+                dados.append(horario.periodo)
+                dados.append(dias_semana)
+                dados.append(horario.codigo)
+                horarios.append(dados)
+            return horarios
 
     def listar_horarios_dias(self, horario):
         lista_dias = []
