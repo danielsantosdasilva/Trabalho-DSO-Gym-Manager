@@ -20,7 +20,7 @@ class TelaAluno(TelaAbstrata):
                       auto_size_columns=True,
                       display_row_numbers=False,
                       justification='right',
-                      num_rows=10,
+                      num_rows=len(dados),
                       key='listar-alunos',
                       row_height=35)]
         ]
@@ -43,7 +43,7 @@ class TelaAluno(TelaAbstrata):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text('Por favor, digite a matrícula do aluno desejado:', font=('Arial',15))],
-            [sg.Text('Matrícula: ', font=('Arial',15)), sg.InputText('', key="matricula")],
+            [sg.Text('Matrícula: ', font=('Arial', 15)), sg.InputText('', key="matricula")],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')],
         ]
         self.__window = sg.Window('Escolher aluno').Layout(layout)

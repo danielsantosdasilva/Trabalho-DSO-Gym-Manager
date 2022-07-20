@@ -11,12 +11,12 @@ class TelaAbstrata(ABC):
         sg.ChangeLookAndFeel('DarkTeal11')
         layout = [
             [sg.Text(f'Cadastro dados pessoais do {nome}', font=('Arial', 25))],
-            [sg.Text('Nome: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="nome")],
-            [sg.Text('Idade: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="idade")],
-            [sg.Text('CPF: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="cpf")],
-            [sg.Text('Peso: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="peso")],
-            [sg.Text('Altura: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="altura")],
-            [sg.Text('Senha: ', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="senha", password_char='*')],
+            [sg.Text('Nome: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="nome")],
+            [sg.Text('Idade: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="idade")],
+            [sg.Text('CPF: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="cpf")],
+            [sg.Text('Peso: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="peso")],
+            [sg.Text('Altura: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="altura")],
+            [sg.Text('Senha: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="senha", password_char='*')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')],
         ]
         self.__window = sg.Window('Cadastro dados pessoais').Layout(layout)
@@ -59,8 +59,8 @@ class TelaAbstrata(ABC):
     def login(self):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
-            [sg.Text('Matrícula:', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="matricula")],
-            [sg.Text('Senha:', size=(10, 1), font=('Arial', 15)), sg.InputText('', key="senha", password_char='*')],
+            [sg.Text('Matrícula:', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="matricula")],
+            [sg.Text('Senha:', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="senha", password_char='*')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Login').Layout(layout)

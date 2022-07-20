@@ -16,7 +16,7 @@ class TelaModalidade(TelaAbstrata):
                       auto_size_columns=True,
                       display_row_numbers=False,
                       justification='right',
-                      num_rows=10,
+                      num_rows=len(dados),
                       key='listar-modalidades',
                       row_height=35)]
         ]
@@ -36,7 +36,7 @@ class TelaModalidade(TelaAbstrata):
                       auto_size_columns=True,
                       display_row_numbers=False,
                       justification='right',
-                      num_rows=10,
+                      num_rows=len(dados),
                       key='listar-horarios',
                       row_height=35)]
         ]

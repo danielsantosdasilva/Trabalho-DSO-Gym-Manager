@@ -2,6 +2,8 @@ from Tela.TelaAluno import TelaAluno
 from Entidade.aluno import Aluno
 from random import randint
 from Entidade.dia_semana import DiaSemana
+from Exception.SemAlunoException import SemAlunoException
+from Exception.AlunoNaoExisteException import AlunoNaoExisteException
 
 
 class CtrlAluno:
@@ -89,11 +91,14 @@ class CtrlAluno:
                         self.__tela_aluno.mensagem("Sucesso", "Os dados do aluno foram alterados com sucesso!")
 
     def selecionar_aluno_matricula(self, matricula):
-        for aluno in self.__lista_alunos:
-            if aluno.matricula == matricula:
-                return aluno
-        else:
-            self.__tela_aluno.mensagem("Falha", "O aluno selecionado não existe!")
+        try:
+            for aluno in self.__lista_alunos:
+                if aluno.matricula == matricula:
+                    return aluno
+            else:
+                raise AlunoNaoExisteException
+        except Exception:
+            self.__tela_aluno.mensagem_error("O aluno selecionado não existe!")
 
     def excluir_aluno(self):
         self.listar_alunos()
@@ -107,11 +112,14 @@ class CtrlAluno:
 
     def listar_alunos(self):
         lista_alunos = self.__lista_alunos
-        if not lista_alunos:
+        try:
+            if not lista_alunos:
+                raise SemAlunoException
+            else:
+                dados_alunos = self.gerar_lista_alunos()
+                self.__tela_aluno.listar_alunos(dados_alunos)
+        except Exception:
             self.__tela_aluno.mensagem_error("Não há nenhum aluno cadastrado no sistema!")
-        else:
-            dados_alunos = self.gerar_lista_alunos()
-            self.__tela_aluno.listar_alunos(dados_alunos)
 
     def gerar_lista_alunos(self):
         alunos = []
