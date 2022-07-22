@@ -1,3 +1,4 @@
+from DAO.AlunoDAO import AlunoDAO
 from Tela.TelaAluno import TelaAluno
 from Entidade.aluno import Aluno
 from random import randint
@@ -8,7 +9,7 @@ from Exception.AlunoNaoExisteException import AlunoNaoExisteException
 
 class CtrlAluno:
     def __init__(self, controlador_sistema):
-        self.__lista_alunos = []
+        self.__lista_alunos = AlunoDAO()
         self.__tela_aluno = TelaAluno()
         self.__controlador_sistema = controlador_sistema
         self.__aluno_logado = None
@@ -46,7 +47,7 @@ class CtrlAluno:
 
     def iniciar_sist_aluno(self):
         self.listar_alunos()
-        if self.__lista_alunos:
+        if self.__lista_alunos.get_all():
             if self.__controlador_sistema.login_aluno():
                 switcher = {1: self.consultar_cadastro, 2: self.consultar_aulas, 3: self.registrar_frequencia, 4: self.emitir_relatorio, 0: self.__controlador_sistema.inicializar}
                 while True:
@@ -64,17 +65,17 @@ class CtrlAluno:
     def cadastrar_aluno(self):
         dados = self.__tela_aluno.opcoes_cadastro("aluno")
         if dados is not None:
-            for aluno in self.__lista_alunos:
+            for aluno in self.__lista_alunos.get_all():
                 if aluno.cpf == dados["cpf"]:
                     self.__tela_aluno.mensagem("Falha", "O aluno já está cadastrado no sistema!")
                     break
             else:
                 aluno = Aluno(dados["nome"], dados["senha"], dados["idade"], dados["cpf"], dados["peso"], dados["altura"], randint(1000, 9999))
-                self.__lista_alunos.append(aluno)
+                self.__lista_alunos.add(aluno)
                 self.__tela_aluno.mensagem("Sucesso", "Aluno cadastrado com sucesso!")
 
     def alterar_dados_aluno(self):
-        if self.__lista_alunos:
+        if self.__lista_alunos.get_all():
             self.listar_alunos()
             matricula = self.__tela_aluno.escolher_aluno()
             if isinstance(matricula, int) and matricula is not None:
@@ -88,11 +89,12 @@ class CtrlAluno:
                         aluno.cpf = dados["cpf"]
                         aluno.altura = dados["altura"]
                         aluno.senha = dados["senha"]
+                        self.__lista_alunos.add(aluno)
                         self.__tela_aluno.mensagem("Sucesso", "Os dados do aluno foram alterados com sucesso!")
 
     def selecionar_aluno_matricula(self, matricula):
         try:
-            for aluno in self.__lista_alunos:
+            for aluno in self.__lista_alunos.get_all():
                 if aluno.matricula == matricula:
                     return aluno
             else:
@@ -102,18 +104,18 @@ class CtrlAluno:
 
     def excluir_aluno(self):
         self.listar_alunos()
-        if self.__lista_alunos:
+        if self.__lista_alunos.get_all():
             matricula = self.__tela_aluno.escolher_aluno()
             if isinstance(matricula, int) and matricula is not None:
                 aluno = self.selecionar_aluno_matricula(matricula)
                 if isinstance(aluno, Aluno) and (aluno is not None):
-                    self.__lista_alunos.remove(aluno)
+                    self.__lista_alunos.remove(aluno.matricula)
                     self.__tela_aluno.mensagem("Sucesso", "O aluno selecionado foi excluído do sistema!")
 
     def listar_alunos(self):
         lista_alunos = self.__lista_alunos
         try:
-            if not lista_alunos:
+            if not lista_alunos.get_all():
                 raise SemAlunoException
             else:
                 dados_alunos = self.gerar_lista_alunos()
@@ -123,8 +125,8 @@ class CtrlAluno:
 
     def gerar_lista_alunos(self):
         alunos = []
-        if self.__lista_alunos:
-            for aluno in self.__lista_alunos:
+        if self.__lista_alunos.get_all():
+            for aluno in self.__lista_alunos.get_all():
                 dados = []
                 dados.append(aluno.nome)
                 dados.append(aluno.matricula)

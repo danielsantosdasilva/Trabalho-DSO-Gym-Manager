@@ -61,7 +61,7 @@ class CtrlSistema:
         if dados is not None:
             matricula = dados["matricula"]
             senha = dados["senha"]
-            for aluno in self.__controlador_aluno.lista_alunos:
+            for aluno in self.__controlador_aluno.lista_alunos.get_all():
                 if aluno.matricula == matricula and aluno.senha == senha:
                     self.__controlador_aluno.aluno_logado = aluno
                     return True

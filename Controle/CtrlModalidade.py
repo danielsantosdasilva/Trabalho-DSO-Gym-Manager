@@ -40,7 +40,7 @@ class CtrlModalidade:
 
     def matricular_aluno_modalidade(self):
         self.__controlador_sistema.controlador_aluno.listar_alunos()
-        if self.__controlador_sistema.controlador_aluno.lista_alunos:
+        if self.__controlador_sistema.controlador_aluno.lista_alunos.get_all():
             matricula = self.__tela_modalidade.escolher_aluno()
             if isinstance(matricula, int) and matricula is not None:
                 aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
@@ -69,7 +69,7 @@ class CtrlModalidade:
 
     def desmatricular_aluno_modalidade(self):
         self.__controlador_sistema.controlador_aluno.listar_alunos()
-        if self.__controlador_sistema.controlador_aluno.lista_alunos:
+        if self.__controlador_sistema.controlador_aluno.lista_alunos.get_all():
             matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
             aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
             if aluno.modalidades:
