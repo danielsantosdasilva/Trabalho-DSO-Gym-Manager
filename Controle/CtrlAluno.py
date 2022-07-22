@@ -149,6 +149,7 @@ class CtrlAluno:
                     for frequencia in aluno.frequencia:
                         if frequencia.aula == horarioaluno:
                             frequencia.aulas_feitas += 1
+                            self.__lista_alunos.add(aluno)
                             self.__tela_aluno.mensagem(f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
                             return
             else:

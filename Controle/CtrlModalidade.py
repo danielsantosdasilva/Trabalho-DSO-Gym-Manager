@@ -65,12 +65,13 @@ class CtrlModalidade:
                                 aluno.frequencia.append(frequencia)
                                 modalidade.alunos.append(aluno) if aluno not in modalidade.alunos else None
                                 aluno.modalidades.append(modalidade) if modalidade not in aluno.modalidades else None
+                                self.__controlador_sistema.controlador_aluno.lista_alunos.add(aluno)
                                 self.__tela_modalidade.mensagem("Sucesso", "Aluno cadastrado na modalidade com sucesso!")
 
     def desmatricular_aluno_modalidade(self):
         self.__controlador_sistema.controlador_aluno.listar_alunos()
         if self.__controlador_sistema.controlador_aluno.lista_alunos.get_all():
-            matricula = self.__tela_modalidade.escolher_aluno("Insira a matricula do aluno a desmatricular: ")
+            matricula = self.__tela_modalidade.escolher_aluno()
             aluno = self.__controlador_sistema.controlador_aluno.selecionar_aluno_matricula(matricula)
             if aluno.modalidades:
                 self.listar_modalidades_aluno(aluno)
@@ -78,15 +79,15 @@ class CtrlModalidade:
                 modalidade = self.selecionar_modalidade_aluno(aluno, codigo_modalidade)
                 if isinstance(modalidade, Modalidade) and (modalidade is not None)\
                         and isinstance(aluno, Aluno) and (aluno is not None):
-                    self.__tela_modalidade.mensagem(f"Aluno selecionado: {aluno.nome}")
                     aluno.modalidades.remove(modalidade) if modalidade in aluno.modalidades else None
                     modalidade.alunos.remove(aluno) if aluno in modalidade.alunos else None
                     for aula in aluno.aulas:
                         if aula.modalidade.horarios == modalidade.horarios:
                             aluno.aulas.remove(aula)
-                    self.__tela_modalidade.mensagem("Aluno desmatriculado da modalidade com sucesso!")
+                    self.__controlador_sistema.controlador_aluno.lista_alunos.add(aluno)
+                    self.__tela_modalidade.mensagem("Sucesso", "Aluno desmatriculado da modalidade com sucesso!")
             else:
-                self.__tela_modalidade.mensagem("O aluno não está cadastrado em nenhuma modalidade.")
+                self.__tela_modalidade.mensagem_error("O aluno não está cadastrado em nenhuma modalidade.")
 
     def listar_modalidades(self):
         lista_modalidades = self.__lista_modalidades
@@ -133,8 +134,18 @@ class CtrlModalidade:
             if modalidade.codigo == codigo:
                 return modalidade
         else:
-            self.__tela_modalidade.mensagem("A modalidade escolhida não existe!")
+            self.__tela_modalidade.mensagem_error("A modalidade escolhida não existe!")
 
     def listar_modalidades_aluno(self, aluno):
-        for modalidade in aluno.modalidades:
-            self.__tela_modalidade.listar_modalidades(modalidade)
+        dados = self.gerar_lista_modalidade_aluno(aluno)
+        self.__tela_modalidade.listar_modalidades(dados)
+
+    def gerar_lista_modalidade_aluno(self, aluno):
+        modalidades = []
+        if aluno.modalidades:
+            for modalidade in aluno.modalidades:
+                dados = []
+                dados.append(modalidade.nome)
+                dados.append(modalidade.codigo)
+                modalidades.append(dados)
+            return modalidades
