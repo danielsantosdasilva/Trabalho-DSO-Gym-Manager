@@ -88,17 +88,26 @@ class TelaAluno(TelaAbstrata):
         ]
         self.__window = sg.Window("Professor - Alunos").Layout(layout)
 
-    def listar_aulas(self, modalidade, horario, codigo):
-        print(f"-------------------------")
-        print(f"Aula: {modalidade.nome}")
-        print(f"Horário: {horario}")
-        print(f"Código: {codigo}")
-        print(f"-------------------------")
+    def listar_aulas(self, dados):
+        headings = ['Modalidade', 'Horário', 'Código']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=False,
+                      justification='right',
+                      num_rows=len(dados),
+                      key='listar-aulas',
+                      row_height=35)]
+        ]
+        window = sg.Window("Listagem de aulas").Layout(layout)
+        button, values = window.Read()
+        if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+        window.close()
 
-    def escolher_codigo_aula(self, mensagem):
-        print("-----ESCOLHER AULA-----")
-        opcao = super().ler_dados(int, mensagem)
-        return opcao
 
     def emitir_relatorio(self, modalidade, total_aulas, aulas_feitas, quociente):
         print(f"* Modalidade {modalidade.nome}")
@@ -125,6 +134,7 @@ class TelaAluno(TelaAbstrata):
         return opcao
 
     def menu_opcoes_aluno(self):
+
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text('Bem vindo, Aluno!', font=("Arial", 25))],

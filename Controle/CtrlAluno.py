@@ -135,29 +135,41 @@ class CtrlAluno:
             return alunos
 
     def listar_aulas(self, aluno):
-        for horarioaluno in aluno.aulas:
-            if horarioaluno.modalidade in aluno.modalidades:
-                self.__tela_aluno.listar_aulas(horarioaluno.modalidade, horarioaluno.horario.periodo, horarioaluno.codigo)
+        dados = self.gerar_lista_aulas(aluno)
+        if aluno.aulas:
+            self.__tela_aluno.listar_aulas(dados)
+        else:
+            self.__tela_aluno.mensagem.mensagem_error('O Aluno não está cadastrado em nenhuma aula!')
+
+    def gerar_lista_aulas(self, aluno):
+        aulas = []
+        if self.__lista_alunos.get_all():
+            for aula in aluno.aulas:
+                dados = []
+                dados.append(aula.modalidade.nome)
+                dados.append(aula.horario.periodo)
+                dados.append(aula.codigo)
+                aulas.append(dados)
+            return aulas
 
     def registrar_frequencia(self):
         aluno = self.__aluno_logado
         self.listar_aulas(aluno)
-        codigo_aula = self.__tela_aluno.escolher_codigo_aula("Escolha o código da aula a registrar frequência: ")
         if aluno.aulas:
+            codigo_aula = self.__tela_aluno.escolher_codigo("Escolha o código da aula a registrar frequência: ")
             for horarioaluno in aluno.aulas:
                 if horarioaluno.modalidade in aluno.modalidades and horarioaluno.codigo == codigo_aula:
                     for frequencia in aluno.frequencia:
                         if frequencia.aula == horarioaluno:
                             frequencia.aulas_feitas += 1
                             self.__lista_alunos.add(aluno)
-                            self.__tela_aluno.mensagem(f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
+                            self.__tela_aluno.mensagem("Sucesso",f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
                             return
             else:
-                self.__tela_aluno.mensagem("A aula escolhida não existe!")
+                self.__tela_aluno.mensagem_error("A aula escolhida não existe!")
 
     def emitir_relatorio(self):
         aluno = self.__aluno_logado
-        self.__tela_aluno.mensagem(f"-----RELATÓRIO FREQUÊNCIA {aluno.nome.upper()}-----")
         if aluno.modalidades:
             for modalidade in aluno.modalidades:
                 total_aulas = 0
@@ -172,4 +184,4 @@ class CtrlAluno:
                     quociente = 0
                 self.__tela_aluno.emitir_relatorio(modalidade, total_aulas, aulas_feitas, quociente)
         else:
-            self.__tela_aluno.mensagem(f"{aluno.nome} não está cadastrado em nenhuma modalidade.")
+            self.__tela_aluno.mensagem_error(f"O aluno não está cadastrado em nenhuma modalidade.")
