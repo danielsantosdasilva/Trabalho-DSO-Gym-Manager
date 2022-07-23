@@ -3,6 +3,7 @@ from Entidade.aluno import Aluno
 from Entidade.modalidade import Modalidade
 from Entidade.frequencia import Frequencia
 from Entidade.horarioaluno import HorarioAluno
+from DAO.ModalidadeDAO import ModalidadeDAO
 from random import randint
 
 
@@ -10,11 +11,11 @@ class CtrlModalidade:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_modalidade = TelaModalidade()
-        self.__lista_modalidades = []
+        self.__dao_modalidades = ModalidadeDAO()
 
     @property
     def lista_modalidades(self):
-        return self.__lista_modalidades
+        return list(self.__dao_modalidades.get_all())
 
     def iniciar_sist_modalidade(self):
         switcher = {1: self.matricular_aluno_modalidade, 2: self.desmatricular_aluno_modalidade,
@@ -25,7 +26,7 @@ class CtrlModalidade:
             metodo()
 
     def selecionar_modalidade(self, codigo):
-        for modalidade in self.__lista_modalidades:
+        for modalidade in self.__dao_modalidades.get_all():
             if modalidade.codigo == codigo:
                 return modalidade
         else:
@@ -90,15 +91,15 @@ class CtrlModalidade:
                 self.__tela_modalidade.mensagem_error("O aluno não está cadastrado em nenhuma modalidade.")
 
     def listar_modalidades(self):
-        lista_modalidades = self.__lista_modalidades
+        lista_modalidades = self.__dao_modalidades.get_all()
         if lista_modalidades:
             dados = self.gerar_lista_modalidades()
             self.__tela_modalidade.listar_modalidades(dados)
 
     def gerar_lista_modalidades(self):
         modalidades = []
-        if self.__lista_modalidades:
-            for modalidade in self.__lista_modalidades:
+        if self.__dao_modalidades.get_all():
+            for modalidade in self.__dao_modalidades.get_all():
                 dados = []
                 dados.append(modalidade.nome)
                 dados.append(modalidade.codigo)
@@ -106,13 +107,13 @@ class CtrlModalidade:
             return modalidades
 
     def listar_horarios(self, modalidade):
-        if self.__lista_modalidades:
+        if self.__dao_modalidades.get_all():
             dados = self.gerar_lista_horarios(modalidade)
             self.__tela_modalidade.listar_horarios(modalidade, dados)
 
     def gerar_lista_horarios(self, modalidade):
         horarios = []
-        if self.__lista_modalidades:
+        if self.__dao_modalidades.get_all():
             for horario in modalidade.horarios:
                 dados = []
                 lista_dias = self.listar_horarios_dias(horario.dia_semana)
