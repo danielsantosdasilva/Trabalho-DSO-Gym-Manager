@@ -8,7 +8,7 @@ class TelaAbstrata(ABC):
         self.__window = None
 
     def opcoes_cadastro(self, nome):
-        sg.ChangeLookAndFeel('DarkTeal11')
+        sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text(f'Cadastro dados pessoais do {nome}', font=('Arial', 25))],
             [sg.Text('Nome: ', size=(11, 1), font=('Arial', 15)), sg.InputText('', key="nome")],
@@ -75,7 +75,7 @@ class TelaAbstrata(ABC):
             return None
 
     def escolher_codigo(self, mensagem):
-        sg.ChangeLookAndFeel('DarkTeal4')
+        sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text(mensagem, font=('Arial', 25))],
             [sg.Text('Código: ', font=('Arial', 15)), sg.InputText('', key="codigo")],

@@ -27,20 +27,20 @@ class CtrlAluno:
         self.__aluno_logado = aluno_logado
 
     def consultar_cadastro(self):
-        self.__tela_aluno.mensagem(f"Usuário logado é {self.__aluno_logado.nome}")
+        self.__tela_aluno.mensagem('Aluno Cadastrado', f"Usuário logado é {self.__aluno_logado.nome}, Matricula: {self.__aluno_logado.matricula}, Peso: {self.__aluno_logado.peso}")
         self.__tela_aluno.mostrar_cadastro(self.__aluno_logado)
 
     def consultar_aulas(self):
         aluno = self.__aluno_logado
         for dia in DiaSemana:
             num_aulas = 0
-            self.__tela_aluno.mensagem(f"-----{dia.value.upper()}-----")
+            self.__tela_aluno.mensagem('Aulas:',f"-----{dia.value.upper()}-----")
             for aula in aluno.aulas:
                 if aula.modalidade in aluno.modalidades and dia in aula.horario.dia_semana:
                     self.__tela_aluno.mensagem(f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
                     num_aulas += 1
             if num_aulas == 0:
-                self.__tela_aluno.mensagem("- Não há nenhuma aula nesse dia.")
+                self.__tela_aluno.mensagem('Aviso:',"- Não há nenhuma aula nesse dia.")
 
     def retornar(self):
         self.__controlador_sistema.iniciar_sist_professor()

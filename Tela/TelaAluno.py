@@ -76,7 +76,7 @@ class TelaAluno(TelaAbstrata):
         return opcao
 
     def cadastro_aluno_prof_window(self):
-        sg.ChangeLookAndFeel('DarkTeal11')
+        sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text('Professor - Administrar Alunos', font = ("Arial", 25, 'bold'))],
             [sg.Radio('Cadastrar aluno', "RD1", key='1')],
