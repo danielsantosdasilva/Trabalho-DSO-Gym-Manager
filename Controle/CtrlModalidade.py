@@ -58,7 +58,7 @@ class CtrlModalidade:
                             for aula in aluno.aulas:
                                 for dia in aula.horario.dia_semana:
                                     if aula.horario.periodo == horario.periodo and dia in horario.dia_semana:
-                                        self.__tela_modalidade.mensagem("O horário selecionado para o aluno já está ocupado na sua agenda.")
+                                        self.__tela_modalidade.mensagem_error("O horário selecionado para o aluno já está ocupado na sua agenda.")
                                         return None
                             else:
                                 aluno.aulas.append(horario_aluno)
