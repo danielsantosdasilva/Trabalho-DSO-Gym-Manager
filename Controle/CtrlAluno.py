@@ -156,17 +156,18 @@ class CtrlAluno:
         aluno = self.__aluno_logado
         self.listar_aulas(aluno)
         if aluno.aulas:
-            codigo_aula = self.__tela_aluno.escolher_codigo("Escolha o código da aula a registrar frequência: ")
-            for horarioaluno in aluno.aulas:
-                if horarioaluno.modalidade in aluno.modalidades and horarioaluno.codigo == codigo_aula:
-                    for frequencia in aluno.frequencia:
-                        if frequencia.aula == horarioaluno:
-                            frequencia.aulas_feitas += 1
-                            self.__lista_alunos.add(aluno)
-                            self.__tela_aluno.mensagem("Sucesso",f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
-                            return
-            else:
-                self.__tela_aluno.mensagem_error("A aula escolhida não existe!")
+            codigo_aula = self.__tela_aluno.escolher_codigo("Escolha o código da aula")
+            if isinstance(codigo_aula, int) and (codigo_aula is not None):
+                for horarioaluno in aluno.aulas:
+                    if horarioaluno.modalidade in aluno.modalidades and horarioaluno.codigo == codigo_aula:
+                        for frequencia in aluno.frequencia:
+                            if frequencia.aula == horarioaluno:
+                                frequencia.aulas_feitas += 1
+                                self.__lista_alunos.add(aluno)
+                                self.__tela_aluno.mensagem("Sucesso", f"Frequência registrada na aula de {frequencia.modalidade.nome} com sucesso!")
+                                return
+                else:
+                    self.__tela_aluno.mensagem_error("A aula escolhida não existe!")
 
     def emitir_relatorio(self):
         aluno = self.__aluno_logado

@@ -108,7 +108,6 @@ class TelaAluno(TelaAbstrata):
             window.close()
         window.close()
 
-
     def emitir_relatorio(self, modalidade, total_aulas, aulas_feitas, quociente):
         print(f"* Modalidade {modalidade.nome}")
         print(f"Nível de frequência no mês: {quociente}%")
@@ -134,7 +133,6 @@ class TelaAluno(TelaAbstrata):
         return opcao
 
     def menu_opcoes_aluno(self):
-
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
             [sg.Text('Bem vindo, Aluno!', font=("Arial", 25))],
