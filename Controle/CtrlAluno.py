@@ -27,7 +27,6 @@ class CtrlAluno:
         self.__aluno_logado = aluno_logado
 
     def consultar_cadastro(self):
-        self.__tela_aluno.mensagem('Aluno Cadastrado', f"Usuário logado é {self.__aluno_logado.nome}, Matricula: {self.__aluno_logado.matricula}, Peso: {self.__aluno_logado.peso}")
         self.__tela_aluno.mostrar_cadastro(self.__aluno_logado)
 
     def consultar_aulas(self):
@@ -37,7 +36,7 @@ class CtrlAluno:
             self.__tela_aluno.mensagem('Aulas:',f"-----{dia.value.upper()}-----")
             for aula in aluno.aulas:
                 if aula.modalidade in aluno.modalidades and dia in aula.horario.dia_semana:
-                    self.__tela_aluno.mensagem(f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
+                    self.__tela_aluno.mensagem('Aulas:',f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
                     num_aulas += 1
             if num_aulas == 0:
                 self.__tela_aluno.mensagem('Aviso:',"- Não há nenhuma aula nesse dia.")
@@ -172,7 +171,20 @@ class CtrlAluno:
     def emitir_relatorio(self):
         aluno = self.__aluno_logado
         if aluno.modalidades:
+            print(self.__controlador_sistema.controlador_modalidade.lista_modalidades)
+            print(*aluno.modalidades)
+            dados = self.gerar_lista_relatorio(aluno)
+            self.__tela_aluno.emitir_relatorio(dados)
+        else:
+            self.__tela_aluno.mensagem_error(f"{aluno.nome} não está cadastrado em nenhuma modalidade.")
+
+    def gerar_lista_relatorio(self, aluno):
+        if aluno.modalidades:
+            relatorio = []
+            print(*aluno.modalidades)
             for modalidade in aluno.modalidades:
+                dados = []
+                dados.append(modalidade.nome)
                 total_aulas = 0
                 aulas_feitas = 0
                 for frequencia in aluno.frequencia:
@@ -183,6 +195,8 @@ class CtrlAluno:
                     quociente = aulas_feitas / total_aulas * 100
                 else:
                     quociente = 0
-                self.__tela_aluno.emitir_relatorio(modalidade, total_aulas, aulas_feitas, quociente)
-        else:
-            self.__tela_aluno.mensagem_error(f"O aluno não está cadastrado em nenhuma modalidade.")
+                dados.append(str(quociente)+'%')
+                dados.append(total_aulas)
+                dados.append(aulas_feitas)
+                relatorio.append(dados)
+            return relatorio

@@ -31,13 +31,21 @@ class TelaAluno(TelaAbstrata):
         window.close()
 
     def mostrar_cadastro(self, aluno):
-        print(f"-----DADOS {aluno.nome.upper()}-----")
-        print(f"Nome: {aluno.nome}")
-        print(f"Matrícula: {aluno.matricula}")
-        print(f"CPF: {aluno.cpf}")
-        print(f"Idade: {aluno.idade} anos")
-        print(f"Peso: {aluno.peso} kgs")
-        print(f"Altura: {aluno.altura} metros")
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Text(f'Dados pessoas do aluno: {aluno.nome}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Matrícula: {aluno.matricula}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'CPF: {aluno.cpf}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Dados pessoas do aluno: {aluno.idade}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Peso: {aluno.peso}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Idade: {aluno.idade}', font=("Arial", 25, 'bold'))],
+            [sg.Button('Voltar')],
+            ]
+        self.__window = sg.Window('Dados Cadastrais').Layout(layout)
+        button, values = self.__window.Read()
+        if button == "Voltar" or button in (None, 'Cancelar'):
+            self.__window.close()
+
 
     def escolher_aluno(self):
         sg.ChangeLookAndFeel('DarkTeal10')
@@ -108,12 +116,25 @@ class TelaAluno(TelaAbstrata):
             window.close()
         window.close()
 
-    def emitir_relatorio(self, modalidade, total_aulas, aulas_feitas, quociente):
-        print(f"* Modalidade {modalidade.nome}")
-        print(f"Nível de frequência no mês: {quociente}%")
-        print(f"Total de aulas em um mês: {total_aulas}")
-        print(f"Total de aulas feitas: {aulas_feitas}")
-        print(f"-----------------------------------")
+    def emitir_relatorio(self, dados):
+        headings = ['Modalidade', 'Frequência mensal', 'Total de aulas', 'Aulas feitas']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=False,
+                      justification='right',
+                      num_rows=len(dados),
+                      key='listar-aulas',
+                      row_height=35)]
+        ]
+        window = sg.Window("Relatório das aulas").Layout(layout)
+        button, values = window.Read()
+        if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+        window.close()
 
     def tela_inicial_aluno(self):
         self.menu_opcoes_aluno()
