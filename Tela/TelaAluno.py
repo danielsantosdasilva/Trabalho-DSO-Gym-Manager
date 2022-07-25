@@ -33,10 +33,9 @@ class TelaAluno(TelaAbstrata):
     def mostrar_cadastro(self, aluno):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
-            [sg.Text(f'Dados pessoas do aluno: {aluno.nome}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Dados pessoais do aluno: {aluno.nome}', font=("Arial", 25, 'bold'))],
             [sg.Text(f'Matrícula: {aluno.matricula}', font=("Arial", 25, 'bold'))],
             [sg.Text(f'CPF: {aluno.cpf}', font=("Arial", 25, 'bold'))],
-            [sg.Text(f'Dados pessoas do aluno: {aluno.idade}', font=("Arial", 25, 'bold'))],
             [sg.Text(f'Peso: {aluno.peso}', font=("Arial", 25, 'bold'))],
             [sg.Text(f'Idade: {aluno.idade}', font=("Arial", 25, 'bold'))],
             [sg.Button('Voltar')],
@@ -113,6 +112,26 @@ class TelaAluno(TelaAbstrata):
         window = sg.Window("Listagem de aulas").Layout(layout)
         button, values = window.Read()
         if button == "Exit" or button == sg.WIN_CLOSED:
+            window.close()
+        window.close()
+
+    def consultar_aulas(self, dados):
+        headings = ['Dia', 'Matutino', 'Vespertino', 'Noturno']
+        sg.ChangeLookAndFeel('DarkTeal10')
+        layout = [
+            [sg.Table(values=dados,
+                      headings=headings,
+                      max_col_width=35,
+                      auto_size_columns=True,
+                      display_row_numbers=False,
+                      justification='right',
+                      num_rows=len(dados),
+                      key='listar-aulas',
+                      row_height=35)]
+        ]
+        window = sg.Window("Grade de Aulas").Layout(layout)
+        button, values = window.Read()
+        if button == "Voltar" or button == sg.WIN_CLOSED:
             window.close()
         window.close()
 

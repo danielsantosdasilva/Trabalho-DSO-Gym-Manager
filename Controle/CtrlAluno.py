@@ -29,17 +29,30 @@ class CtrlAluno:
     def consultar_cadastro(self):
         self.__tela_aluno.mostrar_cadastro(self.__aluno_logado)
 
+    def gerar_lista_grade(self,aluno):
+        dias = {DiaSemana.SEGUNDA: 0, DiaSemana.TERCA: 1,
+                DiaSemana.QUARTA: 2, DiaSemana.QUINTA: 3, DiaSemana.SEXTA: 4}
+        dias_keys = [DiaSemana.SEGUNDA, DiaSemana.TERCA,
+                     DiaSemana.QUARTA, DiaSemana.QUINTA, DiaSemana.SEXTA]
+        horarios = ["Matutino(08:00-10:00)","Vespertino(14:00-16:00)","Noturno(20:00-22:00)"]
+        grade = [["Segunda", "N/A", "N/A", "N/A"], ["Terça", "N/A", "N/A", "N/A"],
+                 ["Quarta", "N/A", "N/A", "N/A"], ["Quinta", "N/A", "N/A", "N/A"], ["Sexta", "N/A", "N/A", "N/A"]]
+        for aula in aluno.aulas:
+            for dia in dias_keys:
+                if dia in aula.horario.dia_semana:
+                    if aula.horario.periodo == horarios[0]:
+                        grade[dias[dia]][1] = aula.modalidade.nome
+                    elif aula.horario.periodo == horarios[1]:
+                        grade[dias[dia]][2] = aula.modalidade.nome
+                    elif aula.horario.periodo == horarios[2]:
+                        grade[dias[dia]][3] = aula.modalidade.nome
+        return grade
+
     def consultar_aulas(self):
         aluno = self.__aluno_logado
-        for dia in DiaSemana:
-            num_aulas = 0
-            self.__tela_aluno.mensagem('Aulas:',f"-----{dia.value.upper()}-----")
-            for aula in aluno.aulas:
-                if aula.modalidade in aluno.modalidades and dia in aula.horario.dia_semana:
-                    self.__tela_aluno.mensagem('Aulas:',f"Modalidade: {aula.modalidade.nome} | Período: {aula.horario.periodo}")
-                    num_aulas += 1
-            if num_aulas == 0:
-                self.__tela_aluno.mensagem('Aviso:',"- Não há nenhuma aula nesse dia.")
+        dados = self.gerar_lista_grade(aluno)
+        self.__tela_aluno.consultar_aulas(dados)
+
 
     def retornar(self):
         self.__controlador_sistema.iniciar_sist_professor()
