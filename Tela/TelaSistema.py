@@ -17,7 +17,6 @@ class TelaSistema(TelaAbstrata):
             opcao = 2
         elif values['3']:
             opcao = 3
-        # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None, 'Cancelar'):
             opcao = 0
         self.close(self.__window)
@@ -44,7 +43,6 @@ class TelaSistema(TelaAbstrata):
             opcao = 1
         elif values['2']:
             opcao = 2
-        # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None,'Cancelar'):
             opcao = 0
         self.close(self.__window)

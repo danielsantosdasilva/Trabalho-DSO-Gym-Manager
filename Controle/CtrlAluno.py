@@ -51,8 +51,10 @@ class CtrlAluno:
     def consultar_aulas(self):
         aluno = self.__aluno_logado
         dados = self.gerar_lista_grade(aluno)
-        self.__tela_aluno.consultar_aulas(dados)
-
+        if aluno.aulas:
+            self.__tela_aluno.consultar_aulas(dados)
+        else:
+            self.__tela_aluno.mensagem_error("O aluno não está cadastrado em nenhuma modalidade!")
 
     def retornar(self):
         self.__controlador_sistema.iniciar_sist_professor()
@@ -184,8 +186,6 @@ class CtrlAluno:
     def emitir_relatorio(self):
         aluno = self.__aluno_logado
         if aluno.modalidades:
-            print(self.__controlador_sistema.controlador_modalidade.lista_modalidades)
-            print(*aluno.modalidades)
             dados = self.gerar_lista_relatorio(aluno)
             self.__tela_aluno.emitir_relatorio(dados)
         else:
@@ -194,7 +194,6 @@ class CtrlAluno:
     def gerar_lista_relatorio(self, aluno):
         if aluno.modalidades:
             relatorio = []
-            print(*aluno.modalidades)
             for modalidade in aluno.modalidades:
                 dados = []
                 dados.append(modalidade.nome)

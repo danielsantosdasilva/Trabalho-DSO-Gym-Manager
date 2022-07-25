@@ -73,13 +73,6 @@ class TelaModalidade(TelaAbstrata):
         ]
         self.__window = sg.Window('Modalidades').Layout(layout)
 
-    def listar_horario_aluno(self, aula):
-        print("-----MODALIDADE-----")
-        print(f"Modalidade: {aula.modalidade.nome}")
-        print(f"Período: {aula.horario.periodo}")
-        print(f"Codigo: {aula.codigo}")
-        print("--------------------")
-
     def escolher_aluno(self):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [

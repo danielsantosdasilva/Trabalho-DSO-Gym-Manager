@@ -1,6 +1,7 @@
 from Tela.TelaAbstrata import TelaAbstrata
 import PySimpleGUI as sg
 
+
 class TelaAluno(TelaAbstrata):
     def __init__(self):
         self.__window = None
@@ -33,18 +34,19 @@ class TelaAluno(TelaAbstrata):
     def mostrar_cadastro(self, aluno):
         sg.ChangeLookAndFeel('DarkTeal10')
         layout = [
-            [sg.Text(f'Dados pessoais do aluno: {aluno.nome}', font=("Arial", 25, 'bold'))],
-            [sg.Text(f'Matrícula: {aluno.matricula}', font=("Arial", 25, 'bold'))],
-            [sg.Text(f'CPF: {aluno.cpf}', font=("Arial", 25, 'bold'))],
-            [sg.Text(f'Peso: {aluno.peso}', font=("Arial", 25, 'bold'))],
-            [sg.Text(f'Idade: {aluno.idade}', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Dados pessoais do aluno', font=("Arial", 25, 'bold'))],
+            [sg.Text(f'Nome: {aluno.nome}', font=("Arial", 15, 'bold'))],
+            [sg.Text(f'Matrícula: {aluno.matricula}', font=("Arial", 15, 'bold'))],
+            [sg.Text(f'CPF: {aluno.cpf}', font=("Arial", 15, 'bold'))],
+            [sg.Text(f'Peso: {aluno.peso} kgs', font=("Arial", 15, 'bold'))],
+            [sg.Text(f'Altura: {aluno.altura} m', font=("Arial", 15, 'bold'))],
+            [sg.Text(f'Idade: {aluno.idade} anos', font=("Arial", 15, 'bold'))],
             [sg.Button('Voltar')],
             ]
         self.__window = sg.Window('Dados Cadastrais').Layout(layout)
         button, values = self.__window.Read()
         if button == "Voltar" or button in (None, 'Cancelar'):
             self.__window.close()
-
 
     def escolher_aluno(self):
         sg.ChangeLookAndFeel('DarkTeal10')
@@ -76,7 +78,6 @@ class TelaAluno(TelaAbstrata):
             opcao = 3
         elif values['4']:
             opcao = 4
-        # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if button in (None, 'Cancelar'):
             opcao = 0
         self.close(self.__window)
