@@ -30,7 +30,7 @@ class CtrlProfessor:
         self.__controlador_sistema.inicializar()
 
     def alterar_dados_prof(self):
-        if self.professor:
+        if self.__dao_professor.get_all():
             professor = self.professor.get(1111)
             if isinstance(professor, Professor) and (professor is not None):
                 dados = self.__tela_professor.opcoes_cadastro("professor")
@@ -42,5 +42,3 @@ class CtrlProfessor:
                     professor.altura = dados["altura"]
                     professor.senha = dados["senha"]
                     self.__dao_professor.add(professor)
-
-
