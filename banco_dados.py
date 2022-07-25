@@ -3,16 +3,17 @@ from Entidade.modalidade import Modalidade
 from Entidade.horario import Horario
 from Entidade.dia_semana import DiaSemana
 from random import randint
+from DAO.ProfessorDAO import ProfessorDAO
 
+#class BancoDados:
+    #def __init__(self, ctrl_sistema):
+        #self.__ctrl_sistema = ctrl_sistema
+        #self.__dao_professor = ProfessorDAO()
 
-class BancoDados:
-    def __init__(self, ctrl_sistema):
-        self.__ctrl_sistema = ctrl_sistema
-
-    def rodar(self):
+    #def rodar(self):
         # PROFESSOR:
-        professor = Professor("Roberto", "admin123", 35, 12543542354, 80, 1.90, 1111)
-        self.__ctrl_sistema.controlador_professor.professor = professor
+        #professor = Professor("Roberto", "admin123", 35, 12543542354, 80, 1.90, 1111)
+        #self.__ctrl_sistema.controlador_professor.professor.add(professor)
         ########################################
 
         # HORARIOS:

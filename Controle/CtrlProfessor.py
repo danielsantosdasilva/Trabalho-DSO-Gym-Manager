@@ -1,12 +1,14 @@
 from Tela.TelaProfessor import TelaProfessor
 from Entidade.professor import Professor
+from DAO.ProfessorDAO import ProfessorDAO
+from Tela.TelaAbstrata import TelaAbstrata
 
 
 class CtrlProfessor:
     def __init__(self, controlador_sistema):
         self.__tela_professor = TelaProfessor()
+        self.__dao_professor = ProfessorDAO()
         self.__controlador_sistema = controlador_sistema
-        self.__professor = None
 
     @property
     def tela_professor(self):
@@ -14,11 +16,11 @@ class CtrlProfessor:
 
     @property
     def professor(self):
-        return self.__professor
+        return self.__dao_professor
 
     @professor.setter
     def professor(self, professor):
-        self.__professor = professor
+        self.__dao_professor = professor
 
     @property
     def controlador_sistema(self):
@@ -28,8 +30,8 @@ class CtrlProfessor:
         self.__controlador_sistema.inicializar()
 
     def alterar_dados_prof(self):
-        if self.__professor:
-            professor = self.__professor
+        if self.professor:
+            professor = self.professor.get(1111)
             if isinstance(professor, Professor) and (professor is not None):
                 dados = self.__tela_professor.opcoes_cadastro("professor")
                 if dados is not None:
@@ -39,3 +41,6 @@ class CtrlProfessor:
                     professor.cpf = dados["cpf"]
                     professor.altura = dados["altura"]
                     professor.senha = dados["senha"]
+                    self.__dao_professor.add(professor)
+
+

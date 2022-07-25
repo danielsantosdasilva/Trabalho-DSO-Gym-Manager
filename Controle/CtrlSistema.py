@@ -50,7 +50,7 @@ class CtrlSistema:
         if dados is not None:
             matricula = dados["matricula"]
             senha = dados["senha"]
-            professor = self.__controlador_professor.professor
+            professor = self.__controlador_professor.professor.get(1111)
             if professor.matricula == matricula and professor.senha == senha:
                 self.iniciar_sist_professor()
             else:
