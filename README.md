@@ -1,4 +1,2 @@
 # Trabalho-DSO-Gym-Manager
-  Este é um trabalho para a disciplina Desenvolvimento de Sistemas Orientados a Objetos do curso de Sistemas de Informação na UFSC. O projeto volta a simular um sistema
-  voltado para uma academia de lutas, em que um professor consegue cadastrar alunos, assim como inscrevê-los em modalidades de luta, como Jiu-Jitsu e Boxe. É também acessível
-  por parte dos alunos cadastrados, que podem ver sua grade de aulas, registrar frequência nelas e, finalmente, emitir um relatório de frequência de suas aulas.
+  Este é um trabalho desenvolvido na disciplina Desenvolvimento de Sistemas Orientados a Objetos do curso de Sistemas de Informação da UFSC. O projeto visa simular um sistema de academia voltado para as categoria de lutas, onde o professor consegue cadastrar alunos, assim como inscrevê-los em modalidades de luta, como Jiu-Jitsu e Boxe. O sistema também É também acessível por parte dos alunos cadastrados, que podem visualizar a sua grade de aulas, registrar frequência nelas e, finalmente, emitir um relatório de frequência de suas aulas.
